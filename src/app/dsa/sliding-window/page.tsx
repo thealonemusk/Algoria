@@ -16,7 +16,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'brute',
         name: 'Brute Force',
-        icon: '🔨',
+        iconName: 'hammer',
         description: 'Check every subarray of length k. Sum each one and track the maximum.',
         timeComplexity: 'O(n·k)',
         spaceComplexity: 'O(1)',
@@ -25,7 +25,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'sliding',
         name: 'Sliding Window',
-        icon: '🪟',
+        iconName: 'wind',
         description: 'Maintain a running sum. Slide the window by adding the next element and removing the first.',
         timeComplexity: 'O(n)',
         spaceComplexity: 'O(1)',

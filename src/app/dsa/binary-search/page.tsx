@@ -16,7 +16,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'linear',
         name: 'Linear Search',
-        icon: '📖',
+        iconName: 'hammer',
         description: 'Scan every element from left to right until target is found. Simple but slow.',
         timeComplexity: 'O(n)',
         spaceComplexity: 'O(1)',
@@ -25,7 +25,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'binary',
         name: 'Binary Search',
-        icon: '🔍',
+        iconName: 'zap',
         description: 'Each comparison eliminates half the search space. Only works on sorted arrays.',
         timeComplexity: 'O(log n)',
         spaceComplexity: 'O(1)',

@@ -24,7 +24,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'brute',
         name: 'Try All Fractions',
-        icon: '🔨',
+        iconName: 'hammer',
         description: 'Check every possible combination of item fractions — exponential search space.',
         timeComplexity: 'O(2ⁿ)',
         spaceComplexity: 'O(n)',
@@ -33,7 +33,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'greedy',
         name: 'Greedy by Value/Weight',
-        icon: '🎒',
+        iconName: 'trending',
         description: 'Sort by value/weight ratio. Take items fully if possible, else take a fraction.',
         timeComplexity: 'O(n log n)',
         spaceComplexity: 'O(1)',

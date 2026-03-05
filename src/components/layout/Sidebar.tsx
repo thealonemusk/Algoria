@@ -2,40 +2,57 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {
+    Home,
+    Globe,
+    SlidersHorizontal,
+    Pointer,
+    Search,
+    Network,
+    Layers,
+    Calendar,
+    Package,
+    BarChart2,
+    Scale,
+    Zap,
+    Database,
+    Radio,
+    Hexagon,
+} from 'lucide-react';
 
 const sections = [
     {
         label: 'Explore',
         items: [
-            { href: '/', label: 'Home', icon: '🏠' },
-            { href: '/universe', label: 'Pattern Universe', icon: '🌌' },
+            { href: '/', label: 'Home', Icon: Home },
+            { href: '/universe', label: 'Pattern Universe', Icon: Globe },
         ],
     },
     {
         label: 'DSA Patterns',
         items: [
-            { href: '/dsa/sliding-window', label: 'Sliding Window', icon: '🪟', badge: 'O(n)' },
-            { href: '/dsa/two-pointer', label: 'Two Pointer', icon: '👆', badge: 'O(n)' },
-            { href: '/dsa/binary-search', label: 'Binary Search', icon: '🔍', badge: 'O(log n)' },
-            { href: '/dsa/graph-traversal', label: 'Graph Traversal', icon: '🕸️', badge: 'BFS/DFS' },
-            { href: '/dsa/dynamic-programming', label: 'Dynamic Programming', icon: '🧩', badge: 'O(n²)' },
+            { href: '/dsa/sliding-window', label: 'Sliding Window', Icon: SlidersHorizontal, badge: 'O(n)' },
+            { href: '/dsa/two-pointer', label: 'Two Pointer', Icon: Pointer, badge: 'O(n)' },
+            { href: '/dsa/binary-search', label: 'Binary Search', Icon: Search, badge: 'O(log n)' },
+            { href: '/dsa/graph-traversal', label: 'Graph Traversal', Icon: Network, badge: 'BFS/DFS' },
+            { href: '/dsa/dynamic-programming', label: 'Dynamic Programming', Icon: Layers, badge: 'DP' },
         ],
     },
     {
         label: 'Greedy',
         items: [
-            { href: '/greedy/job-scheduling', label: 'Job Scheduling', icon: '🗓️', badge: 'O(n log n)' },
-            { href: '/greedy/knapsack', label: 'Fractional Knapsack', icon: '🎒', badge: 'Greedy' },
-            { href: '/greedy/interval-merge', label: 'Interval Merging', icon: '📊', badge: 'Greedy' },
+            { href: '/greedy/job-scheduling', label: 'Job Scheduling', Icon: Calendar, badge: 'O(n log n)' },
+            { href: '/greedy/knapsack', label: 'Fractional Knapsack', Icon: Package, badge: 'Greedy' },
+            { href: '/greedy/interval-merge', label: 'Interval Merging', Icon: BarChart2, badge: 'Greedy' },
         ],
     },
     {
         label: 'System Design',
         items: [
-            { href: '/system-design/load-balancer', label: 'Load Balancer', icon: '⚖️' },
-            { href: '/system-design/caching', label: 'Caching', icon: '⚡' },
-            { href: '/system-design/sharding', label: 'Sharding', icon: '🗄️' },
-            { href: '/system-design/pub-sub', label: 'Pub / Sub', icon: '📡' },
+            { href: '/system-design/load-balancer', label: 'Load Balancer', Icon: Scale },
+            { href: '/system-design/caching', label: 'Caching', Icon: Zap },
+            { href: '/system-design/sharding', label: 'Sharding', Icon: Database },
+            { href: '/system-design/pub-sub', label: 'Pub / Sub', Icon: Radio },
         ],
     },
 ];
@@ -46,7 +63,9 @@ export function Sidebar() {
     return (
         <nav className="sidebar">
             <div className="sidebar-logo">
-                <div className="sidebar-logo-icon">⬡</div>
+                <div className="sidebar-logo-mark">
+                    <Hexagon size={16} strokeWidth={2.5} />
+                </div>
                 <span className="sidebar-logo-text">Algoria</span>
             </div>
 
@@ -59,7 +78,7 @@ export function Sidebar() {
                             href={item.href}
                             className={`sidebar-nav-item ${pathname === item.href ? 'active' : ''}`}
                         >
-                            <span className="sidebar-nav-icon">{item.icon}</span>
+                            <item.Icon className="sidebar-nav-icon" size={15} strokeWidth={1.8} />
                             <span>{item.label}</span>
                             {item.badge && <span className="sidebar-badge">{item.badge}</span>}
                         </Link>

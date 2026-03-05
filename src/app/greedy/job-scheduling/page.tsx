@@ -23,7 +23,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'brute',
         name: 'Exhaustive Search',
-        icon: '🔨',
+        iconName: 'hammer',
         description: 'Try all 2ⁿ subsets of non-overlapping jobs. Choose the max profit subset.',
         timeComplexity: 'O(2ⁿ)',
         spaceComplexity: 'O(n)',
@@ -32,7 +32,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'greedy',
         name: 'Greedy (End-Time Sort)',
-        icon: '🗓️',
+        iconName: 'trending',
         description: 'Sort by end time. Always pick the earliest-ending compatible job. Locally optimal → globally optimal.',
         timeComplexity: 'O(n log n)',
         spaceComplexity: 'O(1)',

@@ -17,7 +17,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'brute',
         name: 'Brute Force',
-        icon: '🔨',
+        iconName: 'hammer',
         description: 'Try every subset of items (2ⁿ combinations). Explodes exponentially.',
         timeComplexity: 'O(2ⁿ)',
         spaceComplexity: 'O(n)',
@@ -26,7 +26,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'dp',
         name: 'Dynamic Programming',
-        icon: '🧩',
+        iconName: 'cpu',
         description: 'Build a table of optimal values. Each cell uses previously computed results.',
         timeComplexity: 'O(n·W)',
         spaceComplexity: 'O(n·W)',

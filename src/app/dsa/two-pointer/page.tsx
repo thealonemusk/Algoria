@@ -16,7 +16,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'brute',
         name: 'Brute Force',
-        icon: '🔨',
+        iconName: 'hammer',
         description: 'Check every pair (i, j) where i ≠ j. O(n²) nested loops.',
         timeComplexity: 'O(n²)',
         spaceComplexity: 'O(1)',
@@ -25,7 +25,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'two-pointer',
         name: 'Two Pointer',
-        icon: '👆',
+        iconName: 'arrow',
         description: 'Sort the array, then converge left and right pointers based on the current sum vs target.',
         timeComplexity: 'O(n log n)',
         spaceComplexity: 'O(1)',

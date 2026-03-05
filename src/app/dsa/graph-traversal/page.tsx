@@ -29,7 +29,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'bfs',
         name: 'BFS — Breadth First',
-        icon: '🌊',
+        iconName: 'wind',
         description: 'Explore level by level using a queue. Guarantees shortest path in unweighted graphs.',
         timeComplexity: 'O(V + E)',
         spaceComplexity: 'O(V)',
@@ -38,7 +38,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'dfs',
         name: 'DFS — Depth First',
-        icon: '🏔️',
+        iconName: 'mountain',
         description: 'Go deep along each branch before backtracking. Uses a stack (or recursion).',
         timeComplexity: 'O(V + E)',
         spaceComplexity: 'O(V)',

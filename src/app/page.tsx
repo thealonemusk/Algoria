@@ -3,237 +3,461 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import {
+    ArrowRight,
+    Bell,
+    Minus,
+    SlidersHorizontal,
+    Pointer,
+    Search,
+    Network,
+    Layers,
+    Calendar,
+    Package,
+    BarChart2,
+    Scale,
+    Zap,
+    Database,
+    Radio,
+    Eye,
+    Play,
+    BarChart,
+    Lightbulb,
+    Hexagon,
+} from 'lucide-react';
 
-function ParticleCanvas() {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+/* ── Animated algorithm canvas ─────────────────────────────── */
+function AlgoCanvas() {
+    const ref = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        const canvas = canvasRef.current;
+        const canvas = ref.current;
         if (!canvas) return;
         const ctx = canvas.getContext('2d')!;
-        let animId: number;
-        let W = window.innerWidth;
-        let H = window.innerHeight;
-
-        canvas.width = W;
-        canvas.height = H;
+        let raf: number;
 
         const resize = () => {
-            W = window.innerWidth; H = window.innerHeight;
-            canvas.width = W; canvas.height = H;
+            canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+            canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
         };
+        resize();
         window.addEventListener('resize', resize);
 
-        // Nodes
-        const N = 70;
-        type Node = { x: number; y: number; vx: number; vy: number; r: number; hue: number };
-        const nodes: Node[] = Array.from({ length: N }, () => ({
-            x: Math.random() * W, y: Math.random() * H,
-            vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
-            r: Math.random() * 2 + 1, hue: Math.random() > 0.5 ? 265 : 195,
-        }));
+        const W = () => canvas.offsetWidth;
+        const H = () => canvas.offsetHeight;
+
+        // Generate array bars
+        const BARS = 18;
+        const values = Array.from({ length: BARS }, (_, i) =>
+            Math.round(30 + Math.abs(Math.sin(i * 0.7)) * 60 + Math.random() * 30)
+        );
+        let windowStart = 0;
+        let t = 0;
 
         const draw = () => {
-            ctx.clearRect(0, 0, W, H);
+            ctx.clearRect(0, 0, W(), H());
+            t += 0.008;
 
-            // Draw connections
-            for (let i = 0; i < N; i++) {
-                for (let j = i + 1; j < N; j++) {
-                    const dx = nodes[i].x - nodes[j].x;
-                    const dy = nodes[i].y - nodes[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(nodes[i].x, nodes[i].y);
-                        ctx.lineTo(nodes[j].x, nodes[j].y);
-                        ctx.strokeStyle = `hsla(${nodes[i].hue}, 80%, 65%, ${(1 - dist / 120) * 0.18})`;
-                        ctx.lineWidth = 0.8;
-                        ctx.stroke();
-                    }
+            // Animate window
+            windowStart = Math.floor((Math.sin(t * 0.5) * 0.5 + 0.5) * (BARS - 4));
+
+            const barW = (W() - 60) / BARS;
+            const maxVal = Math.max(...values);
+            const maxBarH = H() - 70;
+
+            values.forEach((v, i) => {
+                const x = 30 + i * barW + 2;
+                const barH = (v / maxVal) * maxBarH;
+                const y = H() - 40 - barH;
+                const inWindow = i >= windowStart && i < windowStart + 4;
+
+                // Bar shadow / glow
+                if (inWindow) {
+                    ctx.shadowColor = 'rgba(26,18,9,0.25)';
+                    ctx.shadowBlur = 8;
+                    ctx.fillStyle = '#1A1209';
+                } else {
+                    ctx.shadowColor = 'transparent';
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = 'rgba(26, 18, 9, 0.12)';
                 }
-            }
 
-            // Draw nodes
-            nodes.forEach((n) => {
-                const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 4);
-                grad.addColorStop(0, `hsla(${n.hue}, 80%, 70%, 0.9)`);
-                grad.addColorStop(1, `hsla(${n.hue}, 80%, 70%, 0)`);
+                // Rounded top bar
+                const r = 4;
                 ctx.beginPath();
-                ctx.arc(n.x, n.y, n.r * 3, 0, Math.PI * 2);
-                ctx.fillStyle = grad;
+                ctx.moveTo(x + r, y);
+                ctx.lineTo(x + barW - 6 - r, y);
+                ctx.quadraticCurveTo(x + barW - 6, y, x + barW - 6, y + r);
+                ctx.lineTo(x + barW - 6, y + barH);
+                ctx.lineTo(x, y + barH);
+                ctx.lineTo(x, y + r);
+                ctx.quadraticCurveTo(x, y, x + r, y);
+                ctx.closePath();
                 ctx.fill();
-                ctx.beginPath();
-                ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-                ctx.fillStyle = `hsla(${n.hue}, 90%, 75%, 1)`;
-                ctx.fill();
+                ctx.shadowBlur = 0;
 
-                // Update
-                n.x += n.vx; n.y += n.vy;
-                if (n.x < 0 || n.x > W) n.vx *= -1;
-                if (n.y < 0 || n.y > H) n.vy *= -1;
+                // Value label
+                if (inWindow) {
+                    ctx.fillStyle = 'rgba(26,18,9,0.5)';
+                    ctx.font = `600 9px "Inter", sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(String(v), x + (barW - 6) / 2, y - 6);
+                }
+
+                // Index
+                ctx.fillStyle = 'rgba(26,18,9,0.25)';
+                ctx.font = `400 9px "Inter", sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText(String(i), x + (barW - 6) / 2, H() - 24);
             });
 
-            animId = requestAnimationFrame(draw);
+            // Window bracket top line
+            const bx = 30 + windowStart * barW + 2;
+            const bw = 4 * barW - 6;
+            ctx.strokeStyle = '#1A1209';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([]);
+            ctx.beginPath();
+            ctx.moveTo(bx - 2, 20);
+            ctx.lineTo(bx + bw + 2, 20);
+            ctx.stroke();
+
+            // Bracket left/right ticks
+            ctx.beginPath();
+            ctx.moveTo(bx - 2, 20);
+            ctx.lineTo(bx - 2, 32);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(bx + bw + 2, 20);
+            ctx.lineTo(bx + bw + 2, 32);
+            ctx.stroke();
+
+            // Label above bracket
+            ctx.fillStyle = 'rgba(26,18,9,0.6)';
+            ctx.font = `600 10px "Space Grotesk", sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.fillText(`window  k = 4`, bx + bw / 2, 14);
+
+            raf = requestAnimationFrame(draw);
         };
 
         draw();
-        return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize); };
+        return () => {
+            cancelAnimationFrame(raf);
+            window.removeEventListener('resize', resize);
+        };
     }, []);
 
-    return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }} />;
+    return (
+        <canvas
+            ref={ref}
+            style={{ width: '100%', height: '100%', display: 'block' }}
+        />
+    );
 }
 
+/* ── Patterns data ──────────────────────────────────────────── */
 const PATTERNS = [
-    { icon: '🪟', name: 'Sliding Window', href: '/dsa/sliding-window', category: 'DSA', diff: 'Easy' },
-    { icon: '👆', name: 'Two Pointer', href: '/dsa/two-pointer', category: 'DSA', diff: 'Easy' },
-    { icon: '🔍', name: 'Binary Search', href: '/dsa/binary-search', category: 'DSA', diff: 'Easy' },
-    { icon: '🕸️', name: 'Graph Traversal', href: '/dsa/graph-traversal', category: 'DSA', diff: 'Medium' },
-    { icon: '🧩', name: 'Dynamic Programming', href: '/dsa/dynamic-programming', category: 'DSA', diff: 'Hard' },
-    { icon: '🗓️', name: 'Job Scheduling', href: '/greedy/job-scheduling', category: 'Greedy', diff: 'Medium' },
-    { icon: '🎒', name: 'Fractional Knapsack', href: '/greedy/knapsack', category: 'Greedy', diff: 'Medium' },
-    { icon: '📊', name: 'Interval Merge', href: '/greedy/interval-merge', category: 'Greedy', diff: 'Easy' },
-    { icon: '⚖️', name: 'Load Balancer', href: '/system-design/load-balancer', category: 'System', diff: 'Medium' },
-    { icon: '⚡', name: 'Caching', href: '/system-design/caching', category: 'System', diff: 'Medium' },
-    { icon: '🗄️', name: 'Sharding', href: '/system-design/sharding', category: 'System', diff: 'Hard' },
-    { icon: '📡', name: 'Pub / Sub', href: '/system-design/pub-sub', category: 'System', diff: 'Hard' },
+    { label: 'Sliding Window', href: '/dsa/sliding-window', Icon: SlidersHorizontal, cat: 'DSA', diff: 'Easy' },
+    { label: 'Two Pointer', href: '/dsa/two-pointer', Icon: Pointer, cat: 'DSA', diff: 'Easy' },
+    { label: 'Binary Search', href: '/dsa/binary-search', Icon: Search, cat: 'DSA', diff: 'Easy' },
+    { label: 'Graph Traversal', href: '/dsa/graph-traversal', Icon: Network, cat: 'DSA', diff: 'Medium' },
+    { label: 'Dynamic Programming', href: '/dsa/dynamic-programming', Icon: Layers, cat: 'DSA', diff: 'Hard' },
+    { label: 'Job Scheduling', href: '/greedy/job-scheduling', Icon: Calendar, cat: 'Greedy', diff: 'Medium' },
+    { label: 'Fractional Knapsack', href: '/greedy/knapsack', Icon: Package, cat: 'Greedy', diff: 'Medium' },
+    { label: 'Interval Merging', href: '/greedy/interval-merge', Icon: BarChart2, cat: 'Greedy', diff: 'Easy' },
+    { label: 'Load Balancer', href: '/system-design/load-balancer', Icon: Scale, cat: 'System', diff: 'Medium' },
+    { label: 'Caching', href: '/system-design/caching', Icon: Zap, cat: 'System', diff: 'Medium' },
+    { label: 'Sharding', href: '/system-design/sharding', Icon: Database, cat: 'System', diff: 'Hard' },
+    { label: 'Pub / Sub', href: '/system-design/pub-sub', Icon: Radio, cat: 'System', diff: 'Hard' },
 ];
 
-const DIFF_CLASS: Record<string, string> = { Easy: 'diff-easy', Medium: 'diff-medium', Hard: 'diff-hard' };
+const DIFF_CLS: Record<string, string> = {
+    Easy: 'ldiff-easy',
+    Medium: 'ldiff-medium',
+    Hard: 'ldiff-hard',
+};
 
+const STEPS = [
+    { Icon: Eye, title: 'See the Problem', desc: 'Visual problem statement with animated data. No abstract descriptions.' },
+    { Icon: Layers, title: 'Pick a Strategy', desc: 'Brute Force, Optimal, or anything in between — you decide.' },
+    { Icon: Play, title: 'Watch It Execute', desc: 'Step-by-step animation shows exactly what the algorithm does.' },
+    { Icon: BarChart, title: 'Compare Performance', desc: 'Operations count, time complexity, and why one approach wins.' },
+];
+
+/* ── Page ───────────────────────────────────────────────────── */
 export default function HomePage() {
     return (
-        <>
-            {/* HERO */}
-            <section className="hero-section">
-                <ParticleCanvas />
-                <div className="hero-content">
-                    <motion.div className="hero-badge" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}>
-                        ⬡ Visual Algorithm Learning Platform
+        <div className="landing-root">
+            {/* ── NAV ─────────────────────────────────── */}
+            <nav className="landing-nav">
+                <div className="landing-nav-logo">
+                    <div className="landing-nav-logo-mark">
+                        <Hexagon size={16} strokeWidth={2.5} />
+                    </div>
+                    <span className="landing-nav-logo-text">Algoria</span>
+                </div>
+                <div className="landing-nav-actions">
+                    <button className="nav-circle-btn" aria-label="Notifications">
+                        <Bell size={15} />
+                    </button>
+                    <button className="nav-circle-btn" aria-label="Menu">
+                        <Minus size={15} />
+                    </button>
+                </div>
+            </nav>
+
+            {/* ── HERO ─────────────────────────────────── */}
+            <section className="landing-hero">
+                {/* Left text column */}
+                <div className="landing-hero-left">
+                    <motion.div
+                        className="landing-hero-eyebrow"
+                        initial={{ opacity: 0, x: -16 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        <div className="landing-hero-eyebrow-line" />
+                        Visual Learning Platform
                     </motion.div>
 
                     <motion.h1
-                        className="hero-title"
-                        initial={{ opacity: 0, y: 20 }}
+                        className="landing-hero-title"
+                        initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ delay: 0.1, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        Explore Algorithms<br />
-                        <span className="gradient-text">Like a Universe</span>
+                        <span>Algorithm</span>
+                        <span>Exploration</span>
+                        <span
+                            style={{
+                                background: 'linear-gradient(120deg, #6D28D9, #0891B2)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text',
+                            }}
+                        >
+                            Reimagined
+                        </span>
                     </motion.h1>
 
                     <motion.p
-                        className="hero-sub"
-                        initial={{ opacity: 0, y: 20 }}
+                        className="landing-hero-subtitle"
+                        initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        No code. No memorization. Just pure visual experimentation.<br />
-                        Choose strategies, watch algorithms animate, understand patterns.
+                        No code. No memorization. Choose strategies, watch animations, understand patterns through experimentation.
                     </motion.p>
 
                     <motion.div
-                        className="hero-cta-group"
-                        initial={{ opacity: 0, y: 20 }}
+                        className="landing-hero-cta"
+                        initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ delay: 0.3, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        <Link href="/dsa/sliding-window" className="btn-primary">
-                            🚀 Start Learning
+                        <Link href="/dsa/sliding-window" className="btn-dark">
+                            Start Learning
+                            <ArrowRight size={15} />
                         </Link>
-                        <Link href="/universe" className="btn-secondary">
-                            🌌 Pattern Universe
+                        <Link href="/universe" className="btn-outline-dark">
+                            View Universe
                         </Link>
                     </motion.div>
 
-                    {/* Stats */}
+                    {/* Mini stats */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
-                        style={{ display: 'flex', gap: 40, justifyContent: 'center', marginTop: 56 }}
+                        style={{ display: 'flex', gap: 32, marginTop: 48 }}
                     >
-                        {[['12', 'Patterns'], ['5', 'DSA Topics'], ['4', 'System Design Sims']].map(([num, label]) => (
-                            <div key={label} style={{ textAlign: 'center' }}>
-                                <div style={{ fontFamily: 'Space Grotesk', fontSize: 32, fontWeight: 800, background: 'linear-gradient(135deg, #A78BFA, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                                    {num}
-                                </div>
-                                <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>{label}</div>
+                        {[['12', 'Patterns'], ['3', 'Categories'], ['100%', 'Visual']].map(([n, l]) => (
+                            <div key={l}>
+                                <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.04em', color: '#1A1209' }}>{n}</div>
+                                <div style={{ fontSize: 11, color: 'rgba(26,18,9,0.4)', fontFamily: 'Inter, sans-serif', marginTop: 2 }}>{l}</div>
                             </div>
                         ))}
                     </motion.div>
                 </div>
-            </section>
 
-            {/* PATTERN GRID */}
-            <section className="universe-section">
-                <motion.div
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                >
-                    <div style={{ textAlign: 'center', marginBottom: 48 }}>
-                        <div className="hero-badge" style={{ display: 'inline-flex', marginBottom: 16 }}>🌌 Pattern Library</div>
-                        <h2 style={{ fontSize: 40, fontWeight: 800, marginBottom: 12, fontFamily: 'Space Grotesk' }}>
-                            Choose Your <span className="gradient-text">Pattern</span>
-                        </h2>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: 17, maxWidth: 560, margin: '0 auto' }}>
-                            12 interactive simulations spanning DSA patterns, Greedy algorithms, and System Design concepts.
-                        </p>
+                {/* Center — canvas */}
+                <div className="landing-hero-canvas-area">
+                    {/* Large background text */}
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        pointerEvents: 'none',
+                        overflow: 'hidden',
+                    }}>
+                        <div style={{
+                            fontFamily: 'Space Grotesk, sans-serif',
+                            fontWeight: 800,
+                            fontSize: 'clamp(80px, 14vw, 200px)',
+                            color: 'rgba(26,18,9,0.04)',
+                            letterSpacing: '-0.06em',
+                            userSelect: 'none',
+                            whiteSpace: 'nowrap',
+                        }}>
+                            Algoria
+                        </div>
                     </div>
 
-                    <div className="pattern-grid">
-                        {PATTERNS.map((p, i) => (
-                            <motion.div
-                                key={p.href}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.05, duration: 0.4 }}
-                            >
-                                <Link href={p.href} className="pattern-node-card">
-                                    <div className={`pattern-node-difficulty ${DIFF_CLASS[p.diff]}`}>{p.diff}</div>
-                                    <div className="pattern-node-icon">{p.icon}</div>
-                                    <div className="pattern-node-name">{p.name}</div>
-                                    <div className="pattern-node-category">{p.category}</div>
-                                </Link>
-                            </motion.div>
-                        ))}
+                    {/* Floating annotation top */}
+                    <div style={{ position: 'absolute', top: 120, left: '55%', zIndex: 5 }}>
+                        <div className="landing-annotation">
+                            <div className="landing-annotation-dot" />
+                            <div className="landing-annotation-line" />
+                            <div className="landing-annotation-text">Sliding Window — O(n)</div>
+                        </div>
                     </div>
-                </motion.div>
-            </section>
 
-            {/* HOW IT WORKS */}
-            <section style={{ padding: '80px 48px', borderTop: '1px solid var(--border)' }}>
-                <div style={{ textAlign: 'center', marginBottom: 48 }}>
-                    <h2 style={{ fontSize: 36, fontWeight: 800, marginBottom: 12, fontFamily: 'Space Grotesk' }}>
-                        How <span className="gradient-text">Algoria</span> Works
-                    </h2>
+                    {/* Canvas wrapper */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.92, y: 16 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        style={{
+                            width: '78%',
+                            maxWidth: 620,
+                            height: 280,
+                            background: 'rgba(255,255,255,0.55)',
+                            borderRadius: 20,
+                            border: '1.5px solid rgba(26,18,9,0.1)',
+                            boxShadow: '0 24px 60px rgba(26,18,9,0.12), 0 4px 16px rgba(26,18,9,0.06)',
+                            overflow: 'hidden',
+                            backdropFilter: 'blur(12px)',
+                            position: 'relative',
+                            zIndex: 2,
+                        }}
+                    >
+                        {/* Header bar */}
+                        <div style={{
+                            padding: '12px 18px',
+                            borderBottom: '1px solid rgba(26,18,9,0.07)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 8,
+                        }}>
+                            <div style={{ display: 'flex', gap: 5 }}>
+                                {['#FF5F56', '#FFBD2E', '#27C93F'].map((c) => (
+                                    <div key={c} style={{ width: 8, height: 8, borderRadius: '50%', background: c }} />
+                                ))}
+                            </div>
+                            <div style={{ flex: 1, textAlign: 'center', fontSize: 11, color: 'rgba(26,18,9,0.4)', fontFamily: 'JetBrains Mono' }}>
+                                Maximum Sum Subarray — Strategy: Sliding Window
+                            </div>
+                        </div>
+                        <div style={{ height: 'calc(100% - 41px)', padding: '8px 0 0' }}>
+                            <AlgoCanvas />
+                        </div>
+                    </motion.div>
+
+                    {/* Bottom label */}
+                    <div style={{ position: 'absolute', bottom: 100, left: '52%', zIndex: 5 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'rgba(26,18,9,0.45)', fontFamily: 'Inter, sans-serif' }}>
+                            <Lightbulb size={12} />
+                            Active window highlighted in dark
+                        </div>
+                    </div>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 24, maxWidth: 900, margin: '0 auto' }}>
+
+                {/* Right numbers */}
+                <div className="landing-hero-right-numbers">
                     {[
-                        { step: '01', icon: '🎯', title: 'See the Problem', desc: 'A visual problem statement with animated data. No abstract descriptions.' },
-                        { step: '02', icon: '🃏', title: 'Pick a Strategy', desc: 'Brute Force, Optimal, or everything in between. You choose.' },
-                        { step: '03', icon: '▶', title: 'Watch It Execute', desc: 'Step-by-step animation shows exactly what the algorithm does.' },
-                        { step: '04', icon: '📊', title: 'Compare Performance', desc: 'See operations count, time complexity, and why one wins.' },
-                    ].map((s) => (
+                        { n: '01', label: 'Choose Strategy', sub: 'Brute / Optimal' },
+                        { n: '02', label: 'Watch Animation', sub: 'Step-by-step' },
+                        { n: '03', label: 'Compare Results', sub: 'Complexity meter' },
+                    ].map((item) => (
                         <motion.div
-                            key={s.step}
-                            className="glass-card"
-                            style={{ padding: 28 }}
-                            whileHover={{ y: -4, borderColor: 'var(--border-active)' }}
+                            key={item.n}
+                            className="landing-number-item"
+                            initial={{ opacity: 0, x: 16 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: Number(item.n) * 0.12, duration: 0.55 }}
+                        >
+                            <div className="landing-number-item-num">{item.n}</div>
+                            <div className="landing-number-item-label">{item.label}</div>
+                            <div className="landing-number-item-sub">{item.sub}</div>
+                        </motion.div>
+                    ))}
+                </div>
+
+                {/* Scroll indicator */}
+                <div className="landing-scroll-indicator">
+                    <div className="scroll-circle">↓</div>
+                    <span className="scroll-label">Scroll</span>
+                </div>
+            </section>
+
+            {/* ── PATTERNS SECTION ──────────────────── */}
+            <section className="landing-patterns-section">
+                <div className="landing-section-header">
+                    <h2 className="landing-section-title">
+                        Pattern<br />Library
+                    </h2>
+                    <span className="landing-section-count">12 interactive simulations</span>
+                </div>
+
+                <div className="landing-pattern-grid">
+                    {PATTERNS.map((p, i) => (
+                        <motion.div
+                            key={p.href}
                             initial={{ opacity: 0, y: 16 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
+                            transition={{ delay: i * 0.04, duration: 0.4 }}
                         >
-                            <div style={{ fontFamily: 'JetBrains Mono', fontSize: 11, color: 'var(--primary)', marginBottom: 12, letterSpacing: '0.1em' }}>{s.step}</div>
-                            <div style={{ fontSize: 28, marginBottom: 10 }}>{s.icon}</div>
-                            <div style={{ fontFamily: 'Space Grotesk', fontSize: 17, fontWeight: 600, marginBottom: 8 }}>{s.title}</div>
-                            <div style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.7 }}>{s.desc}</div>
+                            <Link href={p.href} className="landing-pattern-card">
+                                <div className={`landing-pattern-card-diff ${DIFF_CLS[p.diff]}`}>{p.diff}</div>
+                                <div className="landing-pattern-icon-wrap">
+                                    <p.Icon size={18} strokeWidth={1.8} />
+                                </div>
+                                <div className="landing-pattern-card-name">{p.label}</div>
+                                <div className="landing-pattern-card-cat">{p.cat}</div>
+                            </Link>
                         </motion.div>
                     ))}
                 </div>
             </section>
-        </>
+
+            {/* ── HOW IT WORKS ──────────────────────── */}
+            <section className="landing-how-section">
+                <h2 className="landing-how-title">How it works</h2>
+
+                <div className="landing-steps-grid">
+                    {STEPS.map((s, i) => (
+                        <motion.div
+                            key={s.title}
+                            className="landing-step"
+                            initial={{ opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.07, duration: 0.4 }}
+                        >
+                            <div className="landing-step-num">0{i + 1}</div>
+                            <div className="landing-step-icon">
+                                <s.Icon size={20} strokeWidth={1.6} />
+                            </div>
+                            <div className="landing-step-title">{s.title}</div>
+                            <div className="landing-step-desc">{s.desc}</div>
+                        </motion.div>
+                    ))}
+                </div>
+
+                <div className="landing-stats-strip">
+                    {[['12', 'Patterns'], ['5', 'DSA Topics'], ['4', 'System Design Sims'], ['0', 'Lines of Code Needed']].map(([n, l]) => (
+                        <div key={l} className="landing-stat">
+                            <div className="landing-stat-num">{n}</div>
+                            <div className="landing-stat-label">{l}</div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        </div>
     );
 }

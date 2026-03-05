@@ -16,7 +16,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'naive',
         name: 'Naive Comparison',
-        icon: '🔨',
+        iconName: 'hammer',
         description: 'Compare every pair of intervals for overlap. O(n²) pairs.',
         timeComplexity: 'O(n²)',
         spaceComplexity: 'O(n)',
@@ -25,7 +25,7 @@ const STRATEGIES: Strategy[] = [
     {
         id: 'greedy',
         name: 'Greedy Sort & Merge',
-        icon: '📊',
+        iconName: 'trending',
         description: 'Sort by start time, then scan once. Merge overlapping intervals greedily.',
         timeComplexity: 'O(n log n)',
         spaceComplexity: 'O(n)',
