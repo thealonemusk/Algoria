@@ -64,7 +64,7 @@ export default function ShardingPage() {
                 ))}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 24 }}>
                 {Array.from({ length: SHARD_COUNT }, (_, i) => {
                     const recs = shardRecords(i);
                     return (
@@ -72,16 +72,16 @@ export default function ShardingPage() {
                             key={i}
                             className="glass-card"
                             animate={{ borderColor: highlighted === i ? SHARD_COLORS[i] : 'var(--border)', boxShadow: highlighted === i ? `0 0 24px ${SHARD_COLORS[i]}40` : 'none' }}
-                            style={{ padding: 20, minHeight: 240 }}
+                            style={{ padding: 24, minHeight: 320 }}
                         >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                                <div style={{ width: 10, height: 10, borderRadius: '50%', background: SHARD_COLORS[i] }} />
-                                <div style={{ fontWeight: 600, fontSize: 13, fontFamily: 'Space Grotesk', color: SHARD_COLORS[i] }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+                                <div style={{ width: 14, height: 14, borderRadius: '50%', background: SHARD_COLORS[i] }} />
+                                <div style={{ fontWeight: 700, fontSize: 16, fontFamily: 'Space Grotesk', color: SHARD_COLORS[i] }}>
                                     {SHARD_NAMES[i].replace('\n', ' ')}
                                 </div>
                             </div>
-                            <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 10 }}>{recs.length} records</div>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                            <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>{recs.length} records</div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                                 <AnimatePresence>
                                     {recs.map((r) => (
                                         <motion.div
@@ -89,9 +89,9 @@ export default function ShardingPage() {
                                             initial={{ opacity: 0, x: -10, scale: 0.9 }}
                                             animate={{ opacity: 1, x: 0, scale: 1 }}
                                             className="info-tag"
-                                            style={{ fontSize: 12, color: SHARD_COLORS[i], borderColor: `${SHARD_COLORS[i]}40` }}
+                                            style={{ fontSize: 14, padding: '6px 12px', color: SHARD_COLORS[i], borderColor: `${SHARD_COLORS[i]}40` }}
                                         >
-                                            <User size={12} style={{ marginRight: 4, display: 'inline' }} /> {r.key}
+                                            <User size={14} style={{ marginRight: 6, display: 'inline' }} /> {r.key}
                                         </motion.div>
                                     ))}
                                 </AnimatePresence>

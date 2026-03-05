@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import {
     Home,
     Globe,
@@ -18,6 +19,7 @@ import {
     Database,
     Radio,
     Hexagon,
+    Trophy,
 } from 'lucide-react';
 
 const sections = [
@@ -85,6 +87,28 @@ export function Sidebar() {
                     ))}
                 </div>
             ))}
+
+            {/* Gamification Profile */}
+            <div style={{ marginTop: 'auto', padding: '24px 20px', borderTop: '1px solid rgba(26, 18, 9, 0.08)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+                    <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--primary-glow)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
+                        <Trophy size={18} />
+                    </div>
+                    <div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'Space Grotesk' }}>Level 5 Architect</div>
+                        <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>1,250 / 2,000 XP</div>
+                    </div>
+                </div>
+
+                <div style={{ width: '100%', height: 6, background: 'rgba(26, 18, 9, 0.06)', borderRadius: 4, overflow: 'hidden' }}>
+                    <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: '62%' }}
+                        transition={{ duration: 1.5, ease: 'easeOut', delay: 0.5 }}
+                        style={{ height: '100%', background: 'var(--primary)', borderRadius: 4 }}
+                    />
+                </div>
+            </div>
         </nav>
     );
 }

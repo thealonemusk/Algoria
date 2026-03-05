@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Scale, Server, Play, Pause, Send, RefreshCw } from 'lucide-react';
+import { Server, Play, Pause, Send, Scale, RefreshCw, Globe } from 'lucide-react';
 
 interface Server { id: number; name: string; load: number; requests: number; color: string; }
 interface Packet { id: number; x: number; targetX: number; y: number; serverId: number; stage: 'transit' | 'done'; }
@@ -46,35 +46,32 @@ export default function LoadBalancerPage() {
     };
 
     const sendRequest = () => {
-        setServers((prev) => {
-            const targetIdx = getTargetServer(strategy, prev);
-            const newPacket: Packet = {
-                id: packetIdRef.current++,
-                x: 0,
-                targetX: 0,
-                y: 0,
-                serverId: targetIdx,
-                stage: 'transit',
-            };
-            setPackets((p) => [...p, newPacket]);
-            setTotalRequests((t) => t + 1);
+        const targetIdx = getTargetServer(strategy, servers);
+        const newPacket: Packet = {
+            id: packetIdRef.current++,
+            x: 0,
+            targetX: 0,
+            y: 0,
+            serverId: targetIdx,
+            stage: 'transit',
+        };
 
+        setPackets((p) => [...p, newPacket]);
+        setTotalRequests((t) => t + 1);
+
+        setTimeout(() => {
+            setPackets((p) => p.filter((pk) => pk.id !== newPacket.id));
+            setServers((s) => s.map((srv, i) => i === targetIdx
+                ? { ...srv, load: Math.min(100, srv.load + Math.floor(Math.random() * 15 + 5)), requests: srv.requests + 1 }
+                : srv
+            ));
             setTimeout(() => {
-                setPackets((p) => p.filter((pk) => pk.id !== newPacket.id));
                 setServers((s) => s.map((srv, i) => i === targetIdx
-                    ? { ...srv, load: Math.min(100, srv.load + Math.floor(Math.random() * 15 + 5)), requests: srv.requests + 1 }
+                    ? { ...srv, load: Math.max(0, srv.load - Math.floor(Math.random() * 8)) }
                     : srv
                 ));
-                setTimeout(() => {
-                    setServers((s) => s.map((srv, i) => i === targetIdx
-                        ? { ...srv, load: Math.max(0, srv.load - Math.floor(Math.random() * 8)) }
-                        : srv
-                    ));
-                }, 1500);
-            }, 800);
-
-            return prev;
-        });
+            }, 1500);
+        }, 800);
     };
 
     useEffect(() => {
@@ -85,6 +82,18 @@ export default function LoadBalancerPage() {
         }
         return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
     }, [running, strategy]);
+
+    const sendBurst = () => {
+        let count = 0;
+        const burstInterval = setInterval(() => {
+            if (count >= 10) {
+                clearInterval(burstInterval);
+                return;
+            }
+            sendRequest();
+            count++;
+        }, 80);
+    };
 
     const reset = () => {
         setRunning(false);
@@ -121,7 +130,7 @@ export default function LoadBalancerPage() {
                 {/* Packets flying */}
                 <AnimatePresence>
                     {packets.map((pk) => {
-                        const targetY = pk.serverId === 0 ? '20%' : pk.serverId === 1 ? '50%' : '80%';
+                        const targetY = `${15 + pk.serverId * 23}%`;
                         return (
                             <motion.div
                                 key={pk.id}
@@ -138,32 +147,32 @@ export default function LoadBalancerPage() {
 
                 {/* Source */}
                 <div style={{ position: 'absolute', left: '10%', top: '50%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, zIndex: 20 }}>
-                    <div className="sim-server-box" style={{ borderColor: 'var(--accent)', boxShadow: running ? '0 0 20px var(--accent-glow)' : 'none' }}>
-                        🌐
+                    <div className="sim-server-box" style={{ borderColor: 'var(--accent)', boxShadow: running ? 'border-box 0 0 0 1px var(--accent), 0 4px 12px rgba(40,132,160,0.2)' : 'var(--shadow-sm)' }}>
+                        <Globe size={28} color="var(--accent)" />
                     </div>
-                    <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Internet</div>
-                    <div style={{ fontSize: 11, fontFamily: 'JetBrains Mono', color: 'var(--accent)' }}>{totalRequests} req</div>
+                    <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>Internet</div>
+                    <div style={{ fontSize: 13, fontFamily: 'JetBrains Mono', color: 'var(--accent)' }}>{totalRequests} req</div>
                 </div>
 
                 {/* LB icon */}
                 <div style={{ position: 'absolute', left: '40%', top: '50%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 20 }}>
-                    <Server size={24} color="#F2EAE0" />
-                    <div style={{ fontSize: 11, color: 'var(--text-secondary)', fontWeight: 600, marginTop: 8 }}>Load Balancer</div>
-                    <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>{strategy}</div>
+                    <Server size={42} strokeWidth={1.5} color="#F2EAE0" />
+                    <div style={{ fontSize: 14, color: 'var(--text-secondary)', fontWeight: 600, marginTop: 8 }}>Load Balancer</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{strategy}</div>
                 </div>
 
                 {/* Servers */}
                 {servers.map((srv, idx) => {
-                    const topPos = idx === 0 ? '20%' : idx === 1 ? '50%' : '80%';
+                    const topPos = `${15 + idx * 23}%`;
                     return (
                         <div key={srv.id} style={{ position: 'absolute', left: '75%', top: topPos, transform: 'translate(0, -50%)', zIndex: 20 }}>
                             <div className="sim-server-node">
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                                     <motion.div
                                         className={`sim-server-box ${srv.load > 60 ? 'active' : ''}`}
                                         animate={{ borderColor: srv.load > 80 ? '#9B3535' : srv.load > 40 ? srv.color : 'var(--border)' }}
                                     >
-                                        <Server size={18} color={srv.color} />
+                                        <Server size={28} strokeWidth={1.5} color={srv.color} />
                                     </motion.div>
                                     <div>
                                         <div style={{ fontSize: 12, fontWeight: 600 }}>{srv.name}</div>
@@ -195,7 +204,8 @@ export default function LoadBalancerPage() {
                 >
                     {running ? <><Pause size={14} /> Pause</> : <><Play size={14} /> Start Simulation</>}
                 </motion.button>
-                <button className="btn-secondary" onClick={sendRequest} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Send size={14} /> Send 1 Request</button>
+                <button className="btn-secondary" onClick={sendRequest} style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Send size={14} /> Send 1 Request</button>
+                <button className="btn-secondary" onClick={sendBurst} style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Send size={14} /> Burst (10)</button>
                 <button className="btn-secondary" onClick={reset} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><RefreshCw size={14} /> Reset</button>
             </div>
 

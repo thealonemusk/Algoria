@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Radio, Download, Send, Inbox, Upload } from 'lucide-react';
+import { Radio, Download, Send, Inbox, Upload, Shield, Package, Mail, BarChart3 } from 'lucide-react';
 
 interface Subscriber { id: string; name: string; topics: string[]; color: string; emoji: string; messages: string[]; }
 interface Event { id: number; topic: string; payload: string; publishedAt: number; }
@@ -76,8 +76,8 @@ export default function PubSubPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'start' }}>
                 {/* Publisher */}
                 <div>
-                    <div className="section-label">Publisher — Choose Event to Publish</div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <div className="section-label" style={{ fontSize: 14 }}>Publisher — Choose Event</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                         {TOPICS.map((topic) => (
                             <motion.button
                                 key={topic}
@@ -86,38 +86,38 @@ export default function PubSubPage() {
                                 onClick={() => publish(topic)}
                                 className="glass-card"
                                 style={{
-                                    padding: '14px 18px',
+                                    padding: '20px 24px',
                                     textAlign: 'left',
                                     cursor: 'pointer',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: 12,
+                                    gap: 16,
                                     borderColor: activeTopic === topic ? TOPIC_COLORS[topic] : 'var(--border)',
                                     boxShadow: activeTopic === topic ? `0 0 20px ${TOPIC_COLORS[topic]}40` : 'none',
                                 }}
                             >
-                                <div style={{ width: 10, height: 10, borderRadius: '50%', background: TOPIC_COLORS[topic], boxShadow: activeTopic === topic ? `0 0 12px ${TOPIC_COLORS[topic]}` : 'none' }} />
+                                <div style={{ width: 14, height: 14, borderRadius: '50%', background: TOPIC_COLORS[topic], boxShadow: activeTopic === topic ? `0 0 16px ${TOPIC_COLORS[topic]}` : 'none' }} />
                                 <div>
-                                    <div style={{ fontFamily: 'JetBrains Mono', fontSize: 13, color: TOPIC_COLORS[topic], fontWeight: 600 }}>{topic}</div>
-                                    <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
+                                    <div style={{ fontFamily: 'JetBrains Mono', fontSize: 16, color: TOPIC_COLORS[topic], fontWeight: 700 }}>{topic}</div>
+                                    <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>
                                         {subscribers.filter((s) => s.topics.includes(topic)).length} subscribers
                                     </div>
                                 </div>
-                                <div style={{ marginLeft: 'auto', display: 'flex' }}><Upload size={16} /></div>
+                                <div style={{ marginLeft: 'auto', display: 'flex', color: 'var(--text-secondary)' }}><Upload size={20} /></div>
                             </motion.button>
                         ))}
                     </div>
 
                     {/* Event log */}
-                    <div className="glass-card" style={{ padding: 16, marginTop: 16 }}>
-                        <div className="section-label">Event Stream</div>
+                    <div className="glass-card" style={{ padding: 20, marginTop: 24, minHeight: 140 }}>
+                        <div className="section-label" style={{ fontSize: 13 }}>Event Stream</div>
                         <AnimatePresence>
                             {events.map((e) => (
                                 <motion.div
                                     key={e.id}
                                     initial={{ opacity: 0, x: -8 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    style={{ fontSize: 11, fontFamily: 'JetBrains Mono', padding: '5px 0', borderBottom: '1px solid var(--border)', color: TOPIC_COLORS[e.topic] }}
+                                    style={{ fontSize: 13, fontFamily: 'JetBrains Mono', padding: '6px 0', borderBottom: '1px solid var(--border)', color: TOPIC_COLORS[e.topic] }}
                                 >
                                     ▸ {e.topic}
                                 </motion.div>
@@ -128,8 +128,8 @@ export default function PubSubPage() {
 
                 {/* Subscribers */}
                 <div>
-                    <div className="section-label">Subscribers</div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    <div className="section-label" style={{ fontSize: 14 }}>Subscribers</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                         {subscribers.map((sub) => {
                             const isActive = activeSubIds.includes(sub.id);
                             return (
@@ -137,15 +137,15 @@ export default function PubSubPage() {
                                     key={sub.id}
                                     className="glass-card"
                                     animate={{ borderColor: isActive ? sub.color : 'var(--border)', boxShadow: isActive ? `0 0 24px ${sub.color}40` : 'none' }}
-                                    style={{ padding: 16 }}
+                                    style={{ padding: 24 }}
                                 >
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12 }}>
                                         <motion.div
                                             animate={{ scale: isActive ? [1, 1.3, 1] : 1 }}
                                             transition={{ duration: 0.4 }}
-                                            style={{ fontSize: 22 }}
+                                            style={{ display: 'flex', color: isActive ? sub.color : 'var(--text-muted)' }}
                                         >
-                                            {sub.emoji}
+                                            {sub.emoji === 'auth' ? <Shield size={32} /> : sub.emoji === 'order' ? <Package size={32} /> : sub.emoji === 'email' ? <Mail size={32} /> : <BarChart3 size={32} />}
                                         </motion.div>
                                         <div>
                                             <div style={{ fontWeight: 600, fontSize: 13, color: isActive ? sub.color : 'var(--text-primary)', fontFamily: 'Space Grotesk' }}>{sub.name}</div>

@@ -111,8 +111,8 @@ export default function CachingPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                     {/* Cache slots */}
                     <div className="glass-card" style={{ padding: 24 }}>
-                        <div className="section-label">Cache ({cache.length}/{CACHE_SIZE} slots used)</div>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 12, marginTop: 12 }}>
+                        <div className="section-label" style={{ fontSize: 14 }}>Cache ({cache.length}/{CACHE_SIZE} slots used)</div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 16, marginTop: 16 }}>
                             {Array.from({ length: CACHE_SIZE }, (_, i) => {
                                 const entry = cache[i];
                                 return (
@@ -124,11 +124,11 @@ export default function CachingPage() {
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 exit={{ opacity: 0, scale: 0.8 }}
                                                 className="glass-card-elevated"
-                                                style={{ padding: '14px 16px', border: flash?.key === entry.key ? `1px solid ${flash.hit ? 'var(--success)' : 'var(--danger)'}` : undefined, boxShadow: flash?.key === entry.key ? `0 0 20px ${flash.hit ? 'var(--success-glow)' : 'var(--danger-glow)'}` : undefined }}
+                                                style={{ padding: '20px 24px', border: flash?.key === entry.key ? `2px solid ${flash.hit ? 'var(--success)' : 'var(--danger)'}` : undefined, boxShadow: flash?.key === entry.key ? `0 0 24px ${flash.hit ? 'var(--success-glow)' : 'var(--danger-glow)'}` : undefined }}
                                             >
-                                                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 4 }}>Slot {i + 1}</div>
-                                                <div style={{ fontFamily: 'JetBrains Mono', fontSize: 13, color: 'var(--accent)', fontWeight: 600 }}>{entry.key}</div>
-                                                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>hits: {entry.hits}</div>
+                                                <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 8 }}>Slot {i + 1}</div>
+                                                <div style={{ fontFamily: 'JetBrains Mono', fontSize: 18, color: 'var(--accent)', fontWeight: 600 }}>{entry.key}</div>
+                                                <div style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 8 }}>Hits: <span style={{ color: 'var(--text)', fontWeight: 600 }}>{entry.hits}</span></div>
                                             </motion.div>
                                         ) : (
                                             <div key={`empty-${i}`} style={{ padding: '14px 16px', borderRadius: 12, border: '1px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
