@@ -1,0 +1,42 @@
+{
+  "name": "algoria",
+  "version": "1.0.0",
+  "description": "Interactive platform to learn and master DSA &amp; System Design patterns through a game-like experience. Practice famous patterns, solve structured challenges, and level up your problem-solving skills with an intuitive, UI-first learning environment.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thealonemusk/Algoria.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thealonemusk/Algoria/issues"
+  },
+  "homepage": "https://github.com/thealonemusk/Algoria#readme",
+  "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "clsx": "^2.1.1",
+    "d3": "^7.9.0",
+    "framer-motion": "^12.35.0",
+    "gsap": "^3.14.2",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.183.2",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  }
+}
