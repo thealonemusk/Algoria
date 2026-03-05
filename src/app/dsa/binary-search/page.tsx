@@ -8,6 +8,7 @@ import { StepControls } from '@/components/ui/StepControls';
 import { ComplexityDashboard } from '@/components/ui/ComplexityDashboard';
 import { AlgorithmEngine, AlgorithmState } from '@/lib/engine/AlgorithmEngine';
 import { generateBinarySearch } from '@/lib/algorithms/binarySearch';
+import { Search } from 'lucide-react';
 
 const ARRAY = [3, 7, 11, 15, 19, 23, 28, 34, 41, 50];
 const TARGET = 28;
@@ -69,7 +70,7 @@ export default function BinarySearchPage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>🔍 Search Pattern</div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><Search size={14} /> Array/Search Pattern</div>
                 <h1 className="page-title gradient-text">Binary Search</h1>
                 <p className="page-subtitle">Find target <strong>{TARGET}</strong> in a sorted array. See how Binary Search shrinks the search space in half every step, achieving O(log n).</p>
             </div>

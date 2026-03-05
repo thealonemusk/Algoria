@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Network, CheckCircle2, Clock, Play } from 'lucide-react';
 import { GraphVisualizer } from '@/components/visualizers/GraphVisualizer';
 import { StrategyCard, Strategy } from '@/components/ui/StrategyCard';
 import { StepControls } from '@/components/ui/StepControls';
@@ -83,7 +84,7 @@ export default function GraphTraversalPage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>🕸️ Graph Pattern</div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><Network size={14} /> Graph Pattern</div>
                 <h1 className="page-title gradient-text">Graph Traversal — BFS vs DFS</h1>
                 <p className="page-subtitle">
                     Both visit all nodes in O(V+E). But the <em>order</em> of exploration is completely different.

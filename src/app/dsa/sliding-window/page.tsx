@@ -7,6 +7,7 @@ import { StrategyCard, Strategy } from '@/components/ui/StrategyCard';
 import { StepControls } from '@/components/ui/StepControls';
 import { ComplexityDashboard } from '@/components/ui/ComplexityDashboard';
 import { AlgorithmEngine, AlgorithmState, AlgorithmStep } from '@/lib/engine/AlgorithmEngine';
+import { SquareSplitHorizontal } from 'lucide-react';
 import { generateSlidingWindow, generateBruteForce } from '@/lib/algorithms/slidingWindow';
 
 const ARRAY = [2, 1, 5, 1, 3, 2, 7, 4, 1, 6];
@@ -67,9 +68,7 @@ export default function SlidingWindowPage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>
-                    🪟 Array Pattern
-                </div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><SquareSplitHorizontal size={14} /> Array Pattern</div>
                 <h1 className="page-title gradient-text">Maximum Sum Subarray of Size K</h1>
                 <p className="page-subtitle">
                     Given an array of integers, find the maximum sum of any contiguous subarray of size <strong>k = {K}</strong>.

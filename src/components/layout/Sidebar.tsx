@@ -62,12 +62,12 @@ export function Sidebar() {
 
     return (
         <nav className="sidebar">
-            <div className="sidebar-logo">
+            <Link href="/" className="sidebar-logo" style={{ textDecoration: 'none' }}>
                 <div className="sidebar-logo-mark">
                     <Hexagon size={16} strokeWidth={2.5} />
                 </div>
                 <span className="sidebar-logo-text">Algoria</span>
-            </div>
+            </Link>
 
             {sections.map((section) => (
                 <div key={section.label} className="sidebar-section">

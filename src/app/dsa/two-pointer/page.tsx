@@ -7,6 +7,7 @@ import { StrategyCard, Strategy } from '@/components/ui/StrategyCard';
 import { StepControls } from '@/components/ui/StepControls';
 import { ComplexityDashboard } from '@/components/ui/ComplexityDashboard';
 import { AlgorithmEngine, AlgorithmState } from '@/lib/engine/AlgorithmEngine';
+import { ArrowsUpFromLine } from 'lucide-react';
 import { generateTwoPointer, generateTwoPointerBrute } from '@/lib/algorithms/twoPointer';
 
 const ARRAY = [1, 4, 6, 2, 9, 3, 11, 7];
@@ -56,7 +57,7 @@ export default function TwoPointerPage() {
         <div className="page-container">
             <div className="page-header">
                 <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>
-                    👆 Array Pattern
+                    <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><ArrowsUpFromLine size={14} /> Array Pattern</div>
                 </div>
                 <h1 className="page-title gradient-text">Two Sum — Find the Pair</h1>
                 <p className="page-subtitle">
