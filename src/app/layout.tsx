@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css';
-import { Sidebar } from '@/components/layout/Sidebar';
+import { AppLayout } from '@/components/layout/AppLayout';
 
 export const metadata: Metadata = {
     title: 'Algoria — Visual Algorithm Learning',
@@ -11,12 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body>
-                <div className="app-shell">
-                    <Sidebar />
-                    <main className="main-content">
-                        {children}
-                    </main>
-                </div>
+                <AppLayout>{children}</AppLayout>
             </body>
         </html>
     );

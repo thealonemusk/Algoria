@@ -102,8 +102,8 @@ export default function JobSchedulingPage() {
                                 const isHighlighted = highlightedJobs.has(idx);
                                 const isSkipped = skippedJobs.has(idx);
                                 const isCurrent = currentJobIdx === idx;
-                                const barColor = isHighlighted ? 'var(--success)' : isSkipped ? 'rgba(239,68,68,0.25)' : isCurrent ? 'var(--primary)' : 'rgba(255,255,255,0.06)';
-                                const textColor = isHighlighted ? '#6EE7B7' : isSkipped ? '#FCA5A5' : isCurrent ? '#A78BFA' : 'var(--text-muted)';
+                                const barColor = isHighlighted ? 'var(--success)' : isSkipped ? 'rgba(155,53,53,0.22)' : isCurrent ? 'var(--primary)' : 'rgba(255,255,255,0.05)';
+                                const textColor = isHighlighted ? '#4ADE80' : isSkipped ? '#F87171' : isCurrent ? '#7B6FDF' : 'var(--text-muted)';
                                 return (
                                     <div key={job.id} style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
                                         <div style={{ width: 100, fontSize: 12, color: textColor, fontWeight: isHighlighted ? 600 : 400, flexShrink: 0, paddingRight: 8, textAlign: 'right' }}>
@@ -155,8 +155,8 @@ export default function JobSchedulingPage() {
                     <ComplexityDashboard
                         visible={completed}
                         strategies={[
-                            { label: 'Exhaustive Search', time: 'O(2ⁿ)', space: 'O(n)', ops: Math.pow(2, JOBS.length), barColor: '#EF4444', maxOps: 100 },
-                            { label: 'Greedy', time: 'O(n log n)', space: 'O(1)', ops: JOBS.length * Math.ceil(Math.log2(JOBS.length)), barColor: '#10B981', maxOps: 100 },
+                            { label: 'Exhaustive Search', time: 'O(2ⁿ)', space: 'O(n)', ops: Math.pow(2, JOBS.length), barColor: '#9B3535', maxOps: 100 },
+                            { label: 'Greedy', time: 'O(n log n)', space: 'O(1)', ops: JOBS.length * Math.ceil(Math.log2(JOBS.length)), barColor: '#2E7D60', maxOps: 100 },
                         ]}
                     />
                 </div>

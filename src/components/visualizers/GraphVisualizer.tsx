@@ -33,15 +33,15 @@ export function GraphVisualizer({ nodes, edges, visitedNodes, currentNode, activ
     const nodeColors: Record<string, string> = {
         default: 'rgba(255,255,255,0.06)',
         visited: 'rgba(124,58,237,0.4)',
-        current: '#06B6D4',
+        current: '#2884A0',
         complete: 'rgba(16,185,129,0.5)',
     };
 
     const nodeBorders: Record<string, string> = {
         default: 'rgba(255,255,255,0.12)',
-        visited: '#7C3AED',
-        current: '#22D3EE',
-        complete: '#10B981',
+        visited: '#5B4FCF',
+        current: '#3A9BBB',
+        complete: '#2E7D60',
     };
 
     return (

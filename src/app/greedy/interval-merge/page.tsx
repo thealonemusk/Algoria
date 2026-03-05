@@ -127,8 +127,8 @@ export default function IntervalMergePage() {
                     <ComplexityDashboard
                         visible={completed}
                         strategies={[
-                            { label: 'Naive O(n²)', time: 'O(n²)', space: 'O(n)', ops: RAW_INTERVALS.length * RAW_INTERVALS.length, barColor: '#EF4444', maxOps: 50 },
-                            { label: 'Greedy Sort+Scan', time: 'O(n log n)', space: 'O(n)', ops: RAW_INTERVALS.length * Math.ceil(Math.log2(RAW_INTERVALS.length)), barColor: '#10B981', maxOps: 50 },
+                            { label: 'Naive O(n²)', time: 'O(n²)', space: 'O(n)', ops: RAW_INTERVALS.length * RAW_INTERVALS.length, barColor: '#9B3535', maxOps: 50 },
+                            { label: 'Greedy Sort+Scan', time: 'O(n log n)', space: 'O(n)', ops: RAW_INTERVALS.length * Math.ceil(Math.log2(RAW_INTERVALS.length)), barColor: '#2E7D60', maxOps: 50 },
                         ]}
                     />
                 </div>

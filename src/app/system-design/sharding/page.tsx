@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SHARD_COUNT = 4;
-const SHARD_COLORS = ['#7C3AED', '#06B6D4', '#10B981', '#F59E0B'];
+const SHARD_COLORS = ['#5B4FCF', '#2884A0', '#2E7D60', '#9A6E2A'];
 const SHARD_NAMES = ['Shard 0\n(A-G)', 'Shard 1\n(H-N)', 'Shard 2\n(O-T)', 'Shard 3\n(U-Z)'];
 
 interface DataRecord { key: string; shardIdx: number; id: number; }
@@ -109,9 +109,9 @@ export default function ShardingPage() {
 
             <div className="complexity-dashboard" style={{ marginTop: 24 }}>
                 {[
-                    { label: 'Hash Sharding', desc: 'Uniform distribution. No range queries.', color: '#7C3AED' },
-                    { label: 'Range Sharding', desc: 'Efficient range queries, but can cause hotspots.', color: '#06B6D4' },
-                    { label: 'Round Robin', desc: 'Perfectly even. No locality, no range support.', color: '#10B981' },
+                    { label: 'Hash Sharding', desc: 'Uniform distribution. No range queries.', color: '#5B4FCF' },
+                    { label: 'Range Sharding', desc: 'Efficient range queries, but can cause hotspots.', color: '#2884A0' },
+                    { label: 'Round Robin', desc: 'Perfectly even. No locality, no range support.', color: '#2E7D60' },
                 ].map((s) => (
                     <div key={s.label} className="complexity-card" style={{ borderColor: strategy === s.label.split(' ')[0] ? s.color : 'var(--border)' }}>
                         <div className="complexity-card-label">{s.label}</div>

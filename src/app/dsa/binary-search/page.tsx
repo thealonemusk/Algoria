@@ -106,8 +106,8 @@ export default function BinarySearchPage() {
                     <ComplexityDashboard
                         visible={completed}
                         strategies={[
-                            { label: 'Linear Search', time: 'O(n)', space: 'O(1)', ops: ARRAY.length, barColor: '#F59E0B', maxOps: 50 },
-                            { label: 'Binary Search', time: 'O(log n)', space: 'O(1)', ops: Math.ceil(Math.log2(ARRAY.length)), barColor: '#10B981', maxOps: 50 },
+                            { label: 'Linear Search', time: 'O(n)', space: 'O(1)', ops: ARRAY.length, barColor: '#9A6E2A', maxOps: 50 },
+                            { label: 'Binary Search', time: 'O(log n)', space: 'O(1)', ops: Math.ceil(Math.log2(ARRAY.length)), barColor: '#2E7D60', maxOps: 50 },
                         ]}
                     />
                 </div>

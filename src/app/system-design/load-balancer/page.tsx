@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface Server { id: number; name: string; load: number; requests: number; color: string; emoji: string; }
 interface Packet { id: number; x: number; targetX: number; y: number; serverId: number; stage: 'transit' | 'done'; }
 
-const COLORS = ['#7C3AED', '#06B6D4', '#10B981', '#F59E0B'];
+const COLORS = ['#5B4FCF', '#2884A0', '#2E7D60', '#9A6E2A'];
 const EMOJIS = ['🖥️', '💻', '🗄️', '⚙️'];
 const STRATEGIES = ['Round Robin', 'Least Connections', 'Random', 'IP Hash'];
 
@@ -154,7 +154,7 @@ export default function LoadBalancerPage() {
                             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                                 <motion.div
                                     className={`sim-server-box ${srv.load > 60 ? 'active' : ''}`}
-                                    animate={{ borderColor: srv.load > 80 ? '#EF4444' : srv.load > 40 ? srv.color : 'var(--border)' }}
+                                    animate={{ borderColor: srv.load > 80 ? '#9B3535' : srv.load > 40 ? srv.color : 'var(--border)' }}
                                 >
                                     {srv.emoji}
                                 </motion.div>
@@ -163,7 +163,7 @@ export default function LoadBalancerPage() {
                                     <div className="complexity-bar-track" style={{ width: 100, marginTop: 4 }}>
                                         <motion.div
                                             className="complexity-bar-fill"
-                                            style={{ background: srv.load > 80 ? '#EF4444' : srv.color }}
+                                            style={{ background: srv.load > 80 ? '#9B3535' : srv.color }}
                                             animate={{ width: `${srv.load}%` }}
                                             transition={{ duration: 0.4 }}
                                         />
@@ -194,10 +194,10 @@ export default function LoadBalancerPage() {
             {/* Info */}
             <div className="complexity-dashboard" style={{ marginTop: 24 }}>
                 {[
-                    { label: 'Round Robin', desc: 'Equal distribution, sequential', color: '#7C3AED' },
-                    { label: 'Least Connections', desc: 'Routes to server with fewest active connections', color: '#06B6D4' },
-                    { label: 'Random', desc: 'Stateless, simple, unpredictable', color: '#10B981' },
-                    { label: 'IP Hash', desc: 'Same client always hits same server (session affinity)', color: '#F59E0B' },
+                    { label: 'Round Robin', desc: 'Equal distribution, sequential', color: '#5B4FCF' },
+                    { label: 'Least Connections', desc: 'Routes to server with fewest active connections', color: '#2884A0' },
+                    { label: 'Random', desc: 'Stateless, simple, unpredictable', color: '#2E7D60' },
+                    { label: 'IP Hash', desc: 'Same client always hits same server (session affinity)', color: '#9A6E2A' },
                 ].map((s) => (
                     <div key={s.label} className="complexity-card" style={{ borderColor: strategy === s.label ? s.color : 'var(--border)' }}>
                         <div className="complexity-card-label">{s.label}</div>

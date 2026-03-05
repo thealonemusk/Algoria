@@ -125,8 +125,8 @@ export default function SlidingWindowPage() {
                     <ComplexityDashboard
                         visible={completed}
                         strategies={[
-                            { label: 'Brute Force', time: 'O(n·k)', space: 'O(1)', ops: ARRAY.length * K, barColor: '#EF4444', maxOps: 50 },
-                            { label: 'Sliding Window', time: 'O(n)', space: 'O(1)', ops: ARRAY.length, barColor: '#10B981', maxOps: 50 },
+                            { label: 'Brute Force', time: 'O(n·k)', space: 'O(1)', ops: ARRAY.length * K, barColor: '#9B3535', maxOps: 50 },
+                            { label: 'Sliding Window', time: 'O(n)', space: 'O(1)', ops: ARRAY.length, barColor: '#2E7D60', maxOps: 50 },
                         ]}
                     />
                 </div>

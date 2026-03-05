@@ -8,15 +8,15 @@ interface Event { id: number; topic: string; payload: string; publishedAt: numbe
 
 const TOPICS = ['user.created', 'order.placed', 'payment.done', 'email.sent', 'analytics.log'];
 const TOPIC_COLORS: Record<string, string> = {
-    'user.created': '#7C3AED', 'order.placed': '#06B6D4', 'payment.done': '#10B981',
-    'email.sent': '#F59E0B', 'analytics.log': '#EC4899',
+    'user.created': '#5B4FCF', 'order.placed': '#2884A0', 'payment.done': '#2E7D60',
+    'email.sent': '#9A6E2A', 'analytics.log': '#85406A',
 };
 
 const INITIAL_SUBS: Subscriber[] = [
-    { id: 'auth', name: 'Auth Service', topics: ['user.created'], color: '#7C3AED', emoji: '🔐', messages: [] },
-    { id: 'order', name: 'Order Service', topics: ['payment.done', 'order.placed'], color: '#06B6D4', emoji: '📦', messages: [] },
-    { id: 'email', name: 'Email Service', topics: ['user.created', 'order.placed', 'payment.done'], color: '#10B981', emoji: '📧', messages: [] },
-    { id: 'analytics', name: 'Analytics', topics: ['user.created', 'order.placed', 'payment.done', 'email.sent', 'analytics.log'], color: '#F59E0B', emoji: '📊', messages: [] },
+    { id: 'auth', name: 'Auth Service', topics: ['user.created'], color: '#5B4FCF', emoji: 'auth', messages: [] },
+    { id: 'order', name: 'Order Service', topics: ['payment.done', 'order.placed'], color: '#2884A0', emoji: 'order', messages: [] },
+    { id: 'email', name: 'Email Service', topics: ['user.created', 'order.placed', 'payment.done'], color: '#2E7D60', emoji: 'email', messages: [] },
+    { id: 'analytics', name: 'Analytics', topics: ['user.created', 'order.placed', 'payment.done', 'email.sent', 'analytics.log'], color: '#9A6E2A', emoji: 'analytics', messages: [] },
 ];
 
 export default function PubSubPage() {

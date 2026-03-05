@@ -153,8 +153,8 @@ export default function DPPage() {
                     <ComplexityDashboard
                         visible={completed}
                         strategies={[
-                            { label: 'Brute Force', time: 'O(2ⁿ)', space: 'O(n)', ops: Math.pow(2, WEIGHTS.length), barColor: '#EF4444', maxOps: 20 },
-                            { label: 'Dynamic Programming', time: 'O(n·W)', space: 'O(n·W)', ops: WEIGHTS.length * CAPACITY, barColor: '#10B981', maxOps: 20 },
+                            { label: 'Brute Force', time: 'O(2ⁿ)', space: 'O(n)', ops: Math.pow(2, WEIGHTS.length), barColor: '#9B3535', maxOps: 20 },
+                            { label: 'Dynamic Programming', time: 'O(n·W)', space: 'O(n·W)', ops: WEIGHTS.length * CAPACITY, barColor: '#2E7D60', maxOps: 20 },
                         ]}
                     />
                 </div>

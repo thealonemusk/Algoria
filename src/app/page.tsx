@@ -229,13 +229,14 @@ export default function HomePage() {
                         transition={{ delay: 0.1, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
                     >
                         <span>Algorithm</span>
+                        <br />
                         <span>Exploration</span>
                         <span
                             style={{
-                                background: 'linear-gradient(120deg, #6D28D9, #0891B2)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                backgroundClip: 'text',
+                                display: 'block',
+                                color: '#1A1209',
+                                fontStyle: 'italic',
+                                fontWeight: 700,
                             }}
                         >
                             Reimagined
@@ -308,13 +309,18 @@ export default function HomePage() {
                     </div>
 
                     {/* Floating annotation top */}
-                    <div style={{ position: 'absolute', top: 120, left: '55%', zIndex: 5 }}>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1, duration: 0.8 }}
+                        style={{ position: 'absolute', top: 100, left: '60%', zIndex: 10 }}
+                    >
                         <div className="landing-annotation">
                             <div className="landing-annotation-dot" />
                             <div className="landing-annotation-line" />
                             <div className="landing-annotation-text">Sliding Window — O(n)</div>
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Canvas wrapper */}
                     <motion.div
@@ -322,17 +328,17 @@ export default function HomePage() {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                         style={{
-                            width: '78%',
-                            maxWidth: 620,
+                            width: '100%',
+                            maxWidth: 580,
                             height: 280,
-                            background: 'rgba(255,255,255,0.55)',
+                            background: 'rgba(255,255,255,0.7)',
                             borderRadius: 20,
                             border: '1.5px solid rgba(26,18,9,0.1)',
-                            boxShadow: '0 24px 60px rgba(26,18,9,0.12), 0 4px 16px rgba(26,18,9,0.06)',
+                            boxShadow: '0 24px 60px rgba(26,18,9,0.08), 0 4px 16px rgba(26,18,9,0.04)',
                             overflow: 'hidden',
-                            backdropFilter: 'blur(12px)',
+                            backdropFilter: 'blur(20px)',
                             position: 'relative',
-                            zIndex: 2,
+                            zIndex: 10,
                         }}
                     >
                         {/* Header bar */}
@@ -358,16 +364,21 @@ export default function HomePage() {
                     </motion.div>
 
                     {/* Bottom label */}
-                    <div style={{ position: 'absolute', bottom: 100, left: '52%', zIndex: 5 }}>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.2 }}
+                        style={{ position: 'absolute', bottom: 100, left: '55%', zIndex: 10 }}
+                    >
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'rgba(26,18,9,0.45)', fontFamily: 'Inter, sans-serif' }}>
                             <Lightbulb size={12} />
                             Active window highlighted in dark
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
 
                 {/* Right numbers */}
-                <div className="landing-hero-right-numbers">
+                <div className="landing-hero-right-numbers" style={{ zIndex: 1 }}>
                     {[
                         { n: '01', label: 'Choose Strategy', sub: 'Brute / Optimal' },
                         { n: '02', label: 'Watch Animation', sub: 'Step-by-step' },

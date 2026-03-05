@@ -107,8 +107,8 @@ export default function TwoPointerPage() {
                     <ComplexityDashboard
                         visible={completed}
                         strategies={[
-                            { label: 'Brute Force O(n²)', time: 'O(n²)', space: 'O(1)', ops: ARRAY.length * ARRAY.length, barColor: '#EF4444', maxOps: 100 },
-                            { label: 'Two Pointer O(n)', time: 'O(n log n)', space: 'O(1)', ops: ARRAY.length + Math.ceil(Math.log2(ARRAY.length)), barColor: '#10B981', maxOps: 100 },
+                            { label: 'Brute Force O(n²)', time: 'O(n²)', space: 'O(1)', ops: ARRAY.length * ARRAY.length, barColor: '#9B3535', maxOps: 100 },
+                            { label: 'Two Pointer O(n)', time: 'O(n log n)', space: 'O(1)', ops: ARRAY.length + Math.ceil(Math.log2(ARRAY.length)), barColor: '#2E7D60', maxOps: 100 },
                         ]}
                     />
                 </div>

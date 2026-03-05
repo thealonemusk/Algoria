@@ -143,8 +143,8 @@ export default function KnapsackPage() {
                     <ComplexityDashboard
                         visible={completed}
                         strategies={[
-                            { label: 'Brute Force', time: 'O(2ⁿ)', space: 'O(n)', ops: Math.pow(2, ITEMS.length), barColor: '#EF4444', maxOps: 40 },
-                            { label: 'Greedy', time: 'O(n log n)', space: 'O(1)', ops: ITEMS.length * 2, barColor: '#10B981', maxOps: 40 },
+                            { label: 'Brute Force', time: 'O(2ⁿ)', space: 'O(n)', ops: Math.pow(2, ITEMS.length), barColor: '#9B3535', maxOps: 40 },
+                            { label: 'Greedy', time: 'O(n log n)', space: 'O(1)', ops: ITEMS.length * 2, barColor: '#2E7D60', maxOps: 40 },
                         ]}
                     />
                 </div>
