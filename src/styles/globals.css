@@ -595,7 +595,17 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 .challenge-main { display: flex; flex-direction: column; gap: 16px; }
-.challenge-sidebar-panel { display: flex; flex-direction: column; gap: 12px; }
+.challenge-sidebar-panel { 
+  display: flex; flex-direction: column; gap: 12px; 
+  position: relative;
+}
+
+.challenge-sidebar-panel > .section-label:first-child {
+  position: absolute;
+  top: -24px;
+  left: 0;
+  margin-bottom: 0;
+}
 
 .challenge-phase-badge {
   display: inline-flex;
@@ -976,7 +986,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   background: rgba(255,255,255,0.45);
   cursor: pointer;
   transition: all 300ms var(--ease-spring);
-  position: relative; overflow: hidden; display: block;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  height: 100%;
   box-shadow: 0 1px 8px rgba(26,18,9,0.05);
 }
 

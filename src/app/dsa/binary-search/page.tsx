@@ -89,8 +89,8 @@ export default function BinarySearchPage() {
                     />
 
                     <AnimatePresence mode="wait">
-                        <motion.div key={step?.description} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="description-box">
-                            {step?.description ?? `Search for target = ${TARGET} in the sorted array. Select a strategy.`}
+                        <motion.div key={step?.description || 'empty'} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="description-box">
+                            {step?.description ?? 'Select a strategy to begin the search.'}
                         </motion.div>
                     </AnimatePresence>
 

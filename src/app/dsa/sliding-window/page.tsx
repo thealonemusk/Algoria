@@ -93,7 +93,7 @@ export default function SlidingWindowPage() {
                     {/* Description */}
                     <AnimatePresence mode="wait">
                         <motion.div
-                            key={step?.description}
+                            key={step?.description || 'empty'}
                             initial={{ opacity: 0, y: 6 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0 }}

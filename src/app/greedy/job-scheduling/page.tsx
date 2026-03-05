@@ -137,8 +137,8 @@ export default function JobSchedulingPage() {
                     </div>
 
                     <AnimatePresence mode="wait">
-                        <motion.div key={step?.description} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="description-box">
-                            {step?.description ?? 'Select Greedy strategy to watch the scheduler pick optimal non-overlapping jobs.'}
+                        <motion.div key={step?.description || 'empty'} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="description-box">
+                            {step?.description ?? 'Select a strategy to schedule the jobs optimally.'}
                         </motion.div>
                     </AnimatePresence>
 

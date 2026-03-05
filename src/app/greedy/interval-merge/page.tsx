@@ -110,7 +110,7 @@ export default function IntervalMergePage() {
                     </div>
 
                     <AnimatePresence mode="wait">
-                        <motion.div key={step?.description} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="description-box">
+                        <motion.div key={step?.description || 'empty'} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="description-box">
                             {step?.description ?? 'Select Greedy to watch intervals merge in a single pass.'}
                         </motion.div>
                     </AnimatePresence>

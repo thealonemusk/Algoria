@@ -136,8 +136,8 @@ export default function DPPage() {
                     </div>
 
                     <AnimatePresence mode="wait">
-                        <motion.div key={step?.description} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="description-box">
-                            {step?.description ?? 'Select Dynamic Programming to see the table fill step by step.'}
+                        <motion.div key={step?.description || 'empty'} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="description-box" style={{ minHeight: 64 }}>
+                            {step?.description ?? 'Select a strategy to solve this classic DP problem.'}
                         </motion.div>
                     </AnimatePresence>
 
