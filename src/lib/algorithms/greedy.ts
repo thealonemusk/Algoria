@@ -39,13 +39,13 @@ export function generateJobScheduling(jobs: Job[]): AlgorithmStep[] {
                 type: 'result',
                 indices: [i],
                 value: totalProfit,
-                description: `✅ Select "${job.name}"! Doesn't overlap (start ${job.start} ≥ ${lastEnd === job.end ? lastEnd - 1 : lastEnd - (job.end - job.start)}). Total profit: ${totalProfit}`,
+                description: `Select "${job.name}"! Doesn't overlap (start ${job.start} ≥ ${lastEnd === job.end ? lastEnd - 1 : lastEnd - (job.end - job.start)}). Total profit: ${totalProfit}`,
             });
         } else {
             steps.push({
                 type: 'eliminate-left',
                 indices: [i],
-                description: `❌ Skip "${job.name}" — overlaps with previous job (start ${job.start} < last end ${lastEnd})`,
+                description: `Skip "${job.name}" — overlaps with previous job (start ${job.start} < last end ${lastEnd})`,
             });
         }
     }
@@ -94,7 +94,7 @@ export function generateKnapsack(items: { name: string; weight: number; value: n
                 type: 'result',
                 indices: [i],
                 value: Math.round(totalValue),
-                description: `✅ Take all of "${item.name}" (weight ${item.weight}). Total value: ${totalValue.toFixed(0)}. Remaining capacity: ${remaining.toFixed(1)}`,
+                description: `Take all of "${item.name}" (weight ${item.weight}). Total value: ${totalValue.toFixed(0)}. Remaining capacity: ${remaining.toFixed(1)}`,
             });
         } else if (remaining > 0) {
             const fraction = remaining / item.weight;
@@ -105,14 +105,14 @@ export function generateKnapsack(items: { name: string; weight: number; value: n
                 type: 'result',
                 indices: [i],
                 value: Math.round(totalValue),
-                description: `🔪 Take ${(fraction * 100).toFixed(0)}% of "${item.name}" (${remaining.toFixed(1)} kg). Added value: ${fractValue.toFixed(1)}. Bag full!`,
+                description: `Take ${(fraction * 100).toFixed(0)}% of "${item.name}" (${remaining.toFixed(1)} kg). Added value: ${fractValue.toFixed(1)}. Bag full!`,
             });
             remaining = 0;
         } else {
             steps.push({
                 type: 'eliminate-left',
                 indices: [i],
-                description: `❌ Skip "${item.name}" — bag is full (0 capacity remaining)`,
+                description: `Skip "${item.name}" — bag is full (0 capacity remaining)`,
             });
         }
     }
@@ -159,7 +159,7 @@ export function generateIntervalMerge(intervals: [number, number][]): AlgorithmS
             steps.push({
                 type: 'window-slide',
                 indices: [i],
-                description: `✅ Overlapping! Merge → [${current[0]}, ${current[1]}]`,
+                description: `Overlapping! Merge → [${current[0]}, ${current[1]}]`,
             });
         } else {
             merged.push(current);

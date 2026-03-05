@@ -52,7 +52,7 @@ export function generateSlidingWindow(arr: number[], k: number): AlgorithmStep[]
                 windowStart: maxStart,
                 windowEnd: i,
                 value: maxSum,
-                description: `New maximum found! Window [${maxStart}..${i}] has sum = ${maxSum} ✨`,
+                description: `New maximum found! Window [${maxStart}..${i}] has sum = ${maxSum}`,
             });
         }
     }
@@ -98,7 +98,7 @@ export function generateBruteForce(arr: number[], k: number): AlgorithmStep[] {
                 windowStart: i,
                 windowEnd: i + k - 1,
                 value: maxSum,
-                description: `New max at window [${i}..${i + k - 1}]: sum = ${maxSum} 🔍`,
+                description: `New max at window [${i}..${i + k - 1}]: sum = ${maxSum}`,
             });
         }
     }

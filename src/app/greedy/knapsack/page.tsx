@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Backpack, Lightbulb, PackageOpen, Check, Eye } from 'lucide-react';
 import { StrategyCard, Strategy } from '@/components/ui/StrategyCard';
 import { StepControls } from '@/components/ui/StepControls';
 import { ComplexityDashboard } from '@/components/ui/ComplexityDashboard';
@@ -71,7 +72,7 @@ export default function KnapsackPage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>🎒 Greedy Pattern</div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><Backpack size={14} /> Greedy Pattern</div>
                 <h1 className="page-title gradient-text">Fractional Knapsack</h1>
                 <p className="page-subtitle">
                     Bag capacity: <strong>{CAPACITY} kg</strong>. Pack items to maximize value. Unlike 0/1 Knapsack, you can take fractions. Greedy works here!
@@ -93,7 +94,7 @@ export default function KnapsackPage() {
                                         animate={{ borderColor: isCurrent ? 'var(--primary)' : isTaken ? 'var(--success)' : 'transparent' }}
                                         style={{ padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 16, border: '1px solid', boxShadow: isCurrent ? '0 0 20px var(--primary-glow)' : isTaken ? '0 0 16px var(--success-glow)' : 'none' }}
                                     >
-                                        <div style={{ fontSize: 22 }}>{isTaken ? '✅' : isCurrent ? '👀' : '📦'}</div>
+                                        <div style={{ fontSize: 22 }}>{isTaken ? <Check color="var(--success)" /> : isCurrent ? <Eye color="var(--accent)" /> : <PackageOpen color="var(--text-muted)" />}</div>
                                         <div style={{ flex: 1 }}>
                                             <div style={{ fontWeight: 600, color: isTaken ? 'var(--success)' : 'var(--text-primary)', fontFamily: 'Space Grotesk' }}>{item.name}</div>
                                             <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Weight: {item.weight}kg · Value: ${item.value}</div>
@@ -159,7 +160,7 @@ export default function KnapsackPage() {
                     <AnimatePresence>
                         {completed && selected === 'greedy' && (
                             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="glass-card" style={{ padding: 20 }}>
-                                <div className="section-label">💡 Why Greedy is Optimal Here</div>
+                                <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Lightbulb size={14} /> Why Greedy is Optimal Here</div>
                                 <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
                                     Fractions make greedy provably optimal. Taking the highest value-per-kg item first
                                     <strong style={{ color: 'var(--primary-light)' }}> always maximizes the remaining capacity's potential</strong>.

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Database, User, Download, RefreshCw } from 'lucide-react';
 
 const SHARD_COUNT = 4;
 const SHARD_COLORS = ['#5B4FCF', '#2884A0', '#2E7D60', '#9A6E2A'];
@@ -52,7 +53,7 @@ export default function ShardingPage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>🗄️ System Design</div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><Database size={14} /> System Design</div>
                 <h1 className="page-title gradient-text">Sharding — Data Distribution</h1>
                 <p className="page-subtitle">Watch how data is distributed across {SHARD_COUNT} database shards. Compare Hash, Range, and Round Robin strategies.</p>
             </div>
@@ -90,7 +91,7 @@ export default function ShardingPage() {
                                             className="info-tag"
                                             style={{ fontSize: 12, color: SHARD_COLORS[i], borderColor: `${SHARD_COLORS[i]}40` }}
                                         >
-                                            👤 {r.key}
+                                            <User size={12} style={{ marginRight: 4, display: 'inline' }} /> {r.key}
                                         </motion.div>
                                     ))}
                                 </AnimatePresence>
@@ -101,10 +102,12 @@ export default function ShardingPage() {
             </div>
 
             <div style={{ display: 'flex', gap: 12 }}>
-                <button className="btn-primary" onClick={insert} disabled={keyIdx >= SAMPLE_KEYS.length}>
-                    📥 Insert "{keyIdx < SAMPLE_KEYS.length ? SAMPLE_KEYS[keyIdx] : 'done'}"
+                <button className="btn-primary" onClick={insert} disabled={keyIdx >= SAMPLE_KEYS.length} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Download size={14} /> Insert "{keyIdx < SAMPLE_KEYS.length ? SAMPLE_KEYS[keyIdx] : 'done'}"
                 </button>
-                <button className="btn-secondary" onClick={() => { setRecords([]); setKeyIdx(0); }}>↺ Reset</button>
+                <button className="btn-secondary" onClick={() => { setRecords([]); setKeyIdx(0); }} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <RefreshCw size={14} /> Reset
+                </button>
             </div>
 
             <div className="complexity-dashboard" style={{ marginTop: 24 }}>

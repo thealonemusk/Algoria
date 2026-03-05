@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Radio, Download, Send, Inbox, Upload } from 'lucide-react';
 
 interface Subscriber { id: string; name: string; topics: string[]; color: string; emoji: string; messages: string[]; }
 interface Event { id: number; topic: string; payload: string; publishedAt: number; }
@@ -67,7 +68,7 @@ export default function PubSubPage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>📡 System Design</div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><Radio size={14} /> System Design</div>
                 <h1 className="page-title gradient-text">Pub / Sub — Event-Driven Architecture</h1>
                 <p className="page-subtitle">Publish events to topics. Watch how subscribers receive only what they care about — decoupled, async, scalable.</p>
             </div>
@@ -102,7 +103,7 @@ export default function PubSubPage() {
                                         {subscribers.filter((s) => s.topics.includes(topic)).length} subscribers
                                     </div>
                                 </div>
-                                <div style={{ marginLeft: 'auto', fontSize: 18 }}>📤</div>
+                                <div style={{ marginLeft: 'auto', display: 'flex' }}><Upload size={16} /></div>
                             </motion.button>
                         ))}
                     </div>
@@ -156,7 +157,7 @@ export default function PubSubPage() {
                                         </div>
                                         {isActive && (
                                             <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="challenge-phase-badge phase-running" style={{ marginLeft: 'auto' }}>
-                                                📨 receiving
+                                                <Inbox size={12} style={{ marginRight: 4, display: 'inline' }} /> receiving
                                             </motion.div>
                                         )}
                                     </div>

@@ -33,7 +33,7 @@ export function generateBinarySearch(arr: number[], target: number): AlgorithmSt
                 leftPointer: mid,
                 rightPointer: mid,
                 value: mid,
-                description: `🎯 Found target ${target} at index ${mid}!`,
+                description: `Found target ${target} at index ${mid}!`,
             });
             steps.push({
                 type: 'complete',

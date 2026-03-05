@@ -107,10 +107,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    UTILITY
    ============================================ */
 .gradient-text {
-  background: linear-gradient(120deg, #5B4FCF 0%, #2884A0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #1A1209;
 }
 
 /* Warm editorial card — used throughout app */

@@ -2,20 +2,22 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Scale, Server, Play, Pause, Send, RefreshCw } from 'lucide-react';
 
-interface Server { id: number; name: string; load: number; requests: number; color: string; emoji: string; }
+interface Server { id: number; name: string; load: number; requests: number; color: string; }
 interface Packet { id: number; x: number; targetX: number; y: number; serverId: number; stage: 'transit' | 'done'; }
 
 const COLORS = ['#5B4FCF', '#2884A0', '#2E7D60', '#9A6E2A'];
-const EMOJIS = ['🖥️', '💻', '🗄️', '⚙️'];
+// Server icons handled visually instead of emojis
+
 const STRATEGIES = ['Round Robin', 'Least Connections', 'Random', 'IP Hash'];
 
 export default function LoadBalancerPage() {
     const [servers, setServers] = useState<Server[]>([
-        { id: 0, name: 'Server A', load: 0, requests: 0, color: COLORS[0], emoji: EMOJIS[0] },
-        { id: 1, name: 'Server B', load: 0, requests: 0, color: COLORS[1], emoji: EMOJIS[1] },
-        { id: 2, name: 'Server C', load: 0, requests: 0, color: COLORS[2], emoji: EMOJIS[2] },
-        { id: 3, name: 'Server D', load: 0, requests: 0, color: COLORS[3], emoji: EMOJIS[3] },
+        { id: 0, name: 'Server A', load: 0, requests: 0, color: COLORS[0] },
+        { id: 1, name: 'Server B', load: 0, requests: 0, color: COLORS[1] },
+        { id: 2, name: 'Server C', load: 0, requests: 0, color: COLORS[2] },
+        { id: 3, name: 'Server D', load: 0, requests: 0, color: COLORS[3] },
     ]);
     const [packets, setPackets] = useState<Packet[]>([]);
     const [strategy, setStrategy] = useState<string>('Round Robin');
@@ -95,7 +97,7 @@ export default function LoadBalancerPage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>⚖️ System Design</div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><Scale size={14} /> System Design</div>
                 <h1 className="page-title gradient-text">Load Balancer Simulation</h1>
                 <p className="page-subtitle">Watch requests distribute across servers in real time. Switch strategies to see how each algorithm affects load balance.</p>
             </div>
@@ -142,40 +144,40 @@ export default function LoadBalancerPage() {
 
                 {/* LB icon */}
                 <div style={{ position: 'absolute', left: '38%', top: '50%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div className={`sim-server-box ${running ? 'active' : ''}`} style={{ width: 64, height: 64, fontSize: 28 }}>⚖️</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-secondary)', fontWeight: 600 }}>Load Balancer</div>
-                    <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>{strategy}</div>
+                    <Server size={24} color="#F2EAE0" />
                 </div>
+                <div style={{ fontSize: 11, color: 'var(--text-secondary)', fontWeight: 600 }}>Load Balancer</div>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>{strategy}</div>
+            </div>
 
-                {/* Servers */}
-                <div style={{ position: 'absolute', right: 32, top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                    {servers.map((srv) => (
-                        <div key={srv.id} className="sim-server-node">
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                <motion.div
-                                    className={`sim-server-box ${srv.load > 60 ? 'active' : ''}`}
-                                    animate={{ borderColor: srv.load > 80 ? '#9B3535' : srv.load > 40 ? srv.color : 'var(--border)' }}
-                                >
-                                    {srv.emoji}
-                                </motion.div>
-                                <div>
-                                    <div style={{ fontSize: 12, fontWeight: 600 }}>{srv.name}</div>
-                                    <div className="complexity-bar-track" style={{ width: 100, marginTop: 4 }}>
-                                        <motion.div
-                                            className="complexity-bar-fill"
-                                            style={{ background: srv.load > 80 ? '#9B3535' : srv.color }}
-                                            animate={{ width: `${srv.load}%` }}
-                                            transition={{ duration: 0.4 }}
-                                        />
-                                    </div>
-                                    <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>
-                                        {srv.load}% load · {srv.requests} req
-                                    </div>
+            {/* Servers */}
+            <div style={{ position: 'absolute', right: 32, top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {servers.map((srv) => (
+                    <div key={srv.id} className="sim-server-node">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <motion.div
+                                className={`sim-server-box ${srv.load > 60 ? 'active' : ''}`}
+                                animate={{ borderColor: srv.load > 80 ? '#9B3535' : srv.load > 40 ? srv.color : 'var(--border)' }}
+                            >
+                                <Server size={18} color={srv.color} />
+                            </motion.div>
+                            <div>
+                                <div style={{ fontSize: 12, fontWeight: 600 }}>{srv.name}</div>
+                                <div className="complexity-bar-track" style={{ width: 100, marginTop: 4 }}>
+                                    <motion.div
+                                        className="complexity-bar-fill"
+                                        style={{ background: srv.load > 80 ? '#9B3535' : srv.color }}
+                                        animate={{ width: `${srv.load}%` }}
+                                        transition={{ duration: 0.4 }}
+                                    />
+                                </div>
+                                <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>
+                                    {srv.load}% load · {srv.requests} req
                                 </div>
                             </div>
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ))}
             </div>
 
             {/* Controls */}
@@ -185,10 +187,10 @@ export default function LoadBalancerPage() {
                     whileTap={{ scale: 0.96 }}
                     onClick={() => setRunning((v) => !v)}
                 >
-                    {running ? '⏸ Pause' : '▶ Start Simulation'}
+                    {running ? <><Pause size={14} /> Pause</> : <><Play size={14} /> Start Simulation</>}
                 </motion.button>
-                <button className="btn-secondary" onClick={sendRequest}>📨 Send 1 Request</button>
-                <button className="btn-secondary" onClick={reset}>↺ Reset</button>
+                <button className="btn-secondary" onClick={sendRequest} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Send size={14} /> Send 1 Request</button>
+                <button className="btn-secondary" onClick={reset} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><RefreshCw size={14} /> Reset</button>
             </div>
 
             {/* Info */}
@@ -205,6 +207,6 @@ export default function LoadBalancerPage() {
                     </div>
                 ))}
             </div>
-        </div>
+        </div >
     );
 }

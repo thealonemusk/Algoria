@@ -6,6 +6,7 @@ import { StrategyCard, Strategy } from '@/components/ui/StrategyCard';
 import { StepControls } from '@/components/ui/StepControls';
 import { ComplexityDashboard } from '@/components/ui/ComplexityDashboard';
 import { AlgorithmEngine, AlgorithmState } from '@/lib/engine/AlgorithmEngine';
+import { Calendar, Lightbulb } from 'lucide-react';
 import { generateJobScheduling, Job } from '@/lib/algorithms/greedy';
 
 const JOBS: Job[] = [
@@ -78,7 +79,7 @@ export default function JobSchedulingPage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>🗓️ Greedy Pattern</div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><Calendar size={14} /> Greedy Pattern</div>
                 <h1 className="page-title gradient-text">Job Scheduling — Activity Selection</h1>
                 <p className="page-subtitle">
                     You have {JOBS.length} tasks each with a time range and profit. Schedule as many non-overlapping jobs as possible to maximize profit.
@@ -171,7 +172,7 @@ export default function JobSchedulingPage() {
                     <AnimatePresence>
                         {completed && selected === 'greedy' && (
                             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="glass-card" style={{ padding: 20 }}>
-                                <div className="section-label">💡 Greedy Proof</div>
+                                <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Lightbulb size={14} /> Greedy Proof</div>
                                 <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
                                     Picking the job that ends earliest <strong style={{ color: 'var(--primary-light)' }}>leaves the maximum future time available</strong>.
                                     This is provably optimal — any deviation leads to equal or worse results.

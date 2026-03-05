@@ -6,6 +6,7 @@ import { StrategyCard, Strategy } from '@/components/ui/StrategyCard';
 import { StepControls } from '@/components/ui/StepControls';
 import { ComplexityDashboard } from '@/components/ui/ComplexityDashboard';
 import { AlgorithmEngine, AlgorithmState } from '@/lib/engine/AlgorithmEngine';
+import { BarChart3 } from 'lucide-react';
 import { generateIntervalMerge } from '@/lib/algorithms/greedy';
 
 const RAW_INTERVALS: [number, number][] = [[1, 4], [2, 6], [8, 10], [15, 18], [10, 12]];
@@ -66,7 +67,7 @@ export default function IntervalMergePage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>📊 Greedy Pattern</div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><BarChart3 size={14} /> Greedy Pattern</div>
                 <h1 className="page-title gradient-text">Merge Overlapping Intervals</h1>
                 <p className="page-subtitle">Given {RAW_INTERVALS.length} intervals, merge all overlapping ones. Greedy approach: sort by start, then do one linear scan.</p>
             </div>

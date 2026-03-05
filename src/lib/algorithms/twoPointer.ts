@@ -32,7 +32,7 @@ export function generateTwoPointer(arr: number[], target: number): AlgorithmStep
                 leftPointer: left,
                 rightPointer: right,
                 value: sum,
-                description: `🎯 Found! ${sorted[left]} + ${sorted[right]} = ${target}`,
+                description: `Found! ${sorted[left]} + ${sorted[right]} = ${target}`,
             });
             break;
         } else if (sum < target) {
@@ -68,7 +68,7 @@ export function generateTwoPointer(arr: number[], target: number): AlgorithmStep
             indices: [left, right],
             leftPointer: left,
             rightPointer: right,
-            description: `Complete! Two Pointer eliminates O(n²) brute force → achieves O(n) time by converging pointers ✨`,
+            description: `Complete! Two Pointer eliminates O(n²) brute force → achieves O(n) time by converging pointers.`,
         });
     }
 
@@ -94,7 +94,7 @@ export function generateTwoPointerBrute(arr: number[], target: number): Algorith
                 steps.push({
                     type: 'result',
                     indices: [i, j],
-                    description: `Found: ${sorted[i]} + ${sorted[j]} = ${target} 🔍`,
+                    description: `Found: ${sorted[i]} + ${sorted[j]} = ${target}`,
                 });
                 steps.push({ type: 'complete', indices: [i, j], description: 'Brute force done. O(n²) comparisons made.' });
                 return steps;

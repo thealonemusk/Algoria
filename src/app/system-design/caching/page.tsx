@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Zap, Send, RefreshCw, CheckCircle2, XCircle, Trash2 } from 'lucide-react';
 
 interface CacheEntry { key: string; value: string; hits: number; insertedAt: number; }
 
@@ -32,7 +33,7 @@ export default function CachingPage() {
                 setFlash({ key, hit: true });
                 setTimeout(() => setFlash(null), 800);
                 setStats((s) => ({ ...s, hits: s.hits + 1 }));
-                setLog((l) => [{ text: `✅ HIT  ${req}`, hit: true }, ...l.slice(0, 14)]);
+                setLog((l) => [{ text: `HIT  ${req}`, hit: true }, ...l.slice(0, 14)]);
                 return prev.map((e) => e.key === key ? { ...e, hits: e.hits + 1, insertedAt: timeRef.current } : e);
             }
 
@@ -40,7 +41,7 @@ export default function CachingPage() {
             setFlash({ key, hit: false });
             setTimeout(() => setFlash(null), 800);
             setStats((s) => ({ ...s, misses: s.misses + 1 }));
-            setLog((l) => [{ text: `❌ MISS ${req} → fetched from DB`, hit: false }, ...l.slice(0, 14)]);
+            setLog((l) => [{ text: `MISS ${req} → fetched from DB`, hit: false }, ...l.slice(0, 14)]);
 
             const newEntry: CacheEntry = { key, value: `data_${key.replace('/', '_')}`, hits: 1, insertedAt: timeRef.current };
             if (prev.length < CACHE_SIZE) return [...prev, newEntry];
@@ -51,7 +52,7 @@ export default function CachingPage() {
             else evictIdx = 0; // FIFO
 
             const evicted = prev[evictIdx];
-            setLog((l) => [{ text: `🗑️ EVICT [${evicted.key}] (${policy})`, hit: false }, ...l.slice(0, 14)]);
+            setLog((l) => [{ text: `EVICT [${evicted.key}] (${policy})`, hit: false }, ...l.slice(0, 14)]);
             const next = [...prev];
             next[evictIdx] = newEntry;
             return next;
@@ -73,7 +74,7 @@ export default function CachingPage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>⚡ System Design</div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><Zap size={14} /> System Design</div>
                 <h1 className="page-title gradient-text">Caching — LRU / LFU / FIFO</h1>
                 <p className="page-subtitle">Simulate a cache with size {CACHE_SIZE}. Fire requests and watch cache hits (green) and misses (red) with different eviction policies.</p>
             </div>
@@ -101,7 +102,7 @@ export default function CachingPage() {
                             color: flash.hit ? 'var(--success)' : 'var(--danger)',
                         }}
                     >
-                        {flash.hit ? '⚡ CACHE HIT' : '🔄 CACHE MISS'}
+                        {flash.hit ? 'CACHE HIT' : 'CACHE MISS'}
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -152,20 +153,20 @@ export default function CachingPage() {
                         <div className="complexity-card">
                             <div className="complexity-card-label">Cache Hits</div>
                             <div className="complexity-card-value" style={{ color: 'var(--success)' }}>{stats.hits}</div>
-                            <div className="complexity-card-sub">✅ Served from cache</div>
+                            <div className="complexity-card-sub" style={{ display: 'flex', alignItems: 'center', gap: 6 }}><CheckCircle2 size={12} /> Served from cache</div>
                         </div>
                         <div className="complexity-card">
                             <div className="complexity-card-label">Cache Misses</div>
                             <div className="complexity-card-value" style={{ color: 'var(--danger)' }}>{stats.misses}</div>
-                            <div className="complexity-card-sub">🔄 DB fetch required</div>
+                            <div className="complexity-card-sub" style={{ display: 'flex', alignItems: 'center', gap: 6 }}><XCircle size={12} /> DB fetch required</div>
                         </div>
                     </div>
 
                     <div style={{ display: 'flex', gap: 12 }}>
-                        <motion.button whileTap={{ scale: 0.96 }} className="btn-primary" onClick={handleRequest} disabled={reqIdx >= SAMPLE_REQUESTS.length}>
-                            📨 Fire Request {reqIdx < SAMPLE_REQUESTS.length ? `"${SAMPLE_REQUESTS[reqIdx]}"` : '(done)'}
+                        <motion.button whileTap={{ scale: 0.96 }} className="btn-primary" onClick={handleRequest} disabled={reqIdx >= SAMPLE_REQUESTS.length} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <Send size={14} /> Fire Request {reqIdx < SAMPLE_REQUESTS.length ? `"${SAMPLE_REQUESTS[reqIdx]}"` : '(done)'}
                         </motion.button>
-                        <button className="btn-secondary" onClick={reset}>↺ Reset</button>
+                        <button className="btn-secondary" onClick={reset} style={{ display: 'flex', alignItems: 'center', gap: 6 }}><RefreshCw size={14} /> Reset</button>
                     </div>
                 </div>
 

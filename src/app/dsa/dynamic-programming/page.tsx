@@ -6,6 +6,7 @@ import { StrategyCard, Strategy } from '@/components/ui/StrategyCard';
 import { StepControls } from '@/components/ui/StepControls';
 import { ComplexityDashboard } from '@/components/ui/ComplexityDashboard';
 import { AlgorithmEngine, AlgorithmState } from '@/lib/engine/AlgorithmEngine';
+import { BrainCircuit } from 'lucide-react';
 import { generateDPKnapsack } from '@/lib/algorithms/dp';
 
 const WEIGHTS = [2, 3, 4, 5];
@@ -73,7 +74,7 @@ export default function DPPage() {
     return (
         <div className="page-container">
             <div className="page-header">
-                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex' }}>🧩 DP Pattern</div>
+                <div className="challenge-phase-badge phase-selection" style={{ marginBottom: 12, display: 'inline-flex', gap: 6, alignItems: 'center' }}><BrainCircuit size={14} /> DP Pattern</div>
                 <h1 className="page-title gradient-text">0/1 Knapsack — Dynamic Programming</h1>
                 <p className="page-subtitle">
                     You have a knapsack with capacity <strong>{CAPACITY}</strong> and {ITEMS.length} items. Maximize the total value.
