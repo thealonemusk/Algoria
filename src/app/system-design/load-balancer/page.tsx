@@ -50,9 +50,9 @@ export default function LoadBalancerPage() {
             const targetIdx = getTargetServer(strategy, prev);
             const newPacket: Packet = {
                 id: packetIdRef.current++,
-                x: 120,
-                targetX: 80 + targetIdx * 150,
-                y: 100 + Math.random() * 30 - 15,
+                x: 0,
+                targetX: 0,
+                y: 0,
                 serverId: targetIdx,
                 stage: 'transit',
             };
@@ -117,24 +117,27 @@ export default function LoadBalancerPage() {
             </div>
 
             {/* Sim */}
-            <div className="sim-container" style={{ minHeight: 320 }}>
+            <div className="sim-container" style={{ minHeight: 400, position: 'relative' }}>
                 {/* Packets flying */}
                 <AnimatePresence>
-                    {packets.map((pk) => (
-                        <motion.div
-                            key={pk.id}
-                            initial={{ opacity: 0, scale: 0, left: 60, top: pk.y }}
-                            animate={{ opacity: 1, scale: 1, left: pk.targetX + 20, top: servers[pk.serverId] ? 200 : pk.y }}
-                            exit={{ opacity: 0, scale: 0 }}
-                            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                            className="sim-packet"
-                            style={{ background: servers[pk.serverId]?.color, position: 'absolute' }}
-                        />
-                    ))}
+                    {packets.map((pk) => {
+                        const targetY = pk.serverId === 0 ? '20%' : pk.serverId === 1 ? '50%' : '80%';
+                        return (
+                            <motion.div
+                                key={pk.id}
+                                initial={{ opacity: 0, scale: 0, left: '10%', top: '50%' }}
+                                animate={{ opacity: 1, scale: 1, left: '70%', top: targetY }}
+                                exit={{ opacity: 0, scale: 0 }}
+                                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                                className="sim-packet"
+                                style={{ background: servers[pk.serverId]?.color, position: 'absolute', transform: 'translate(-50%, -50%)', zIndex: 10 }}
+                            />
+                        );
+                    })}
                 </AnimatePresence>
 
                 {/* Source */}
-                <div style={{ position: 'absolute', left: 24, top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div style={{ position: 'absolute', left: '10%', top: '50%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, zIndex: 20 }}>
                     <div className="sim-server-box" style={{ borderColor: 'var(--accent)', boxShadow: running ? '0 0 20px var(--accent-glow)' : 'none' }}>
                         🌐
                     </div>
@@ -143,41 +146,44 @@ export default function LoadBalancerPage() {
                 </div>
 
                 {/* LB icon */}
-                <div style={{ position: 'absolute', left: '38%', top: '50%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ position: 'absolute', left: '40%', top: '50%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 20 }}>
                     <Server size={24} color="#F2EAE0" />
+                    <div style={{ fontSize: 11, color: 'var(--text-secondary)', fontWeight: 600, marginTop: 8 }}>Load Balancer</div>
+                    <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>{strategy}</div>
                 </div>
-                <div style={{ fontSize: 11, color: 'var(--text-secondary)', fontWeight: 600 }}>Load Balancer</div>
-                <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>{strategy}</div>
-            </div>
 
-            {/* Servers */}
-            <div style={{ position: 'absolute', right: 32, top: '50%', transform: 'translateY(-50%)', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {servers.map((srv) => (
-                    <div key={srv.id} className="sim-server-node">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                            <motion.div
-                                className={`sim-server-box ${srv.load > 60 ? 'active' : ''}`}
-                                animate={{ borderColor: srv.load > 80 ? '#9B3535' : srv.load > 40 ? srv.color : 'var(--border)' }}
-                            >
-                                <Server size={18} color={srv.color} />
-                            </motion.div>
-                            <div>
-                                <div style={{ fontSize: 12, fontWeight: 600 }}>{srv.name}</div>
-                                <div className="complexity-bar-track" style={{ width: 100, marginTop: 4 }}>
+                {/* Servers */}
+                {servers.map((srv, idx) => {
+                    const topPos = idx === 0 ? '20%' : idx === 1 ? '50%' : '80%';
+                    return (
+                        <div key={srv.id} style={{ position: 'absolute', left: '75%', top: topPos, transform: 'translate(0, -50%)', zIndex: 20 }}>
+                            <div className="sim-server-node">
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                                     <motion.div
-                                        className="complexity-bar-fill"
-                                        style={{ background: srv.load > 80 ? '#9B3535' : srv.color }}
-                                        animate={{ width: `${srv.load}%` }}
-                                        transition={{ duration: 0.4 }}
-                                    />
-                                </div>
-                                <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>
-                                    {srv.load}% load · {srv.requests} req
+                                        className={`sim-server-box ${srv.load > 60 ? 'active' : ''}`}
+                                        animate={{ borderColor: srv.load > 80 ? '#9B3535' : srv.load > 40 ? srv.color : 'var(--border)' }}
+                                    >
+                                        <Server size={18} color={srv.color} />
+                                    </motion.div>
+                                    <div>
+                                        <div style={{ fontSize: 12, fontWeight: 600 }}>{srv.name}</div>
+                                        <div className="complexity-bar-track" style={{ width: 100, marginTop: 4 }}>
+                                            <motion.div
+                                                className="complexity-bar-fill"
+                                                style={{ background: srv.load > 80 ? '#9B3535' : srv.color }}
+                                                animate={{ width: `${srv.load}%` }}
+                                                transition={{ duration: 0.4 }}
+                                            />
+                                        </div>
+                                        <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>
+                                            {srv.load}% load · {srv.requests} req
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             {/* Controls */}

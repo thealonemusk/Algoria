@@ -125,7 +125,7 @@ export default function KnapsackPage() {
                     </div>
 
                     <AnimatePresence mode="wait">
-                        <motion.div key={step?.description} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="description-box">
+                        <motion.div key={step?.description || 'empty'} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="description-box">
                             {step?.description ?? 'Select the Greedy strategy to fill your knapsack optimally.'}
                         </motion.div>
                     </AnimatePresence>
@@ -163,7 +163,7 @@ export default function KnapsackPage() {
                                 <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Lightbulb size={14} /> Why Greedy is Optimal Here</div>
                                 <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
                                     Fractions make greedy provably optimal. Taking the highest value-per-kg item first
-                                    <strong style={{ color: 'var(--primary-light)' }}> always maximizes the remaining capacity's potential</strong>.
+                                    <strong style={{ color: 'var(--primary-light)' }}> always maximizes the remaining capacity&apos;s potential</strong>.
                                     This does NOT work for 0/1 Knapsack — that needs DP.
                                 </p>
                             </motion.div>

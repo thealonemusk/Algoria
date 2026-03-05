@@ -47,91 +47,93 @@ export default function UniversePage() {
                 <p className="page-subtitle">Every pattern is a node in an interconnected galaxy. Click any node to enter that challenge.</p>
             </div>
 
-            <div className="glass-card" style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
-                <div style={{
-                    position: 'absolute', inset: 0,
-                    background: 'radial-gradient(ellipse at 30% 40%, rgba(91,79,207,0.05) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(40,132,160,0.04) 0%, transparent 60%)',
-                    pointerEvents: 'none',
-                }} />
+            <div className="glass-card" style={{ padding: 0, overflowX: 'auto', overflowY: 'hidden', position: 'relative' }}>
+                <div style={{ minWidth: 900, position: 'relative' }}>
+                    <div style={{
+                        position: 'absolute', inset: 0,
+                        background: 'radial-gradient(ellipse at 30% 40%, rgba(91,79,207,0.05) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(40,132,160,0.04) 0%, transparent 60%)',
+                        pointerEvents: 'none',
+                    }} />
 
-                <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} style={{ width: '100%', height: 'auto', display: 'block' }}>
-                    <defs>
-                        {NODES.map((n) => (
-                            <radialGradient key={n.id} id={`glow-${n.id}`}>
-                                <stop offset="0%" stopColor={n.color} stopOpacity="0.4" />
-                                <stop offset="100%" stopColor={n.color} stopOpacity="0" />
-                            </radialGradient>
+                    <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} style={{ width: '100%', height: 'auto', display: 'block' }}>
+                        <defs>
+                            {NODES.map((n) => (
+                                <radialGradient key={n.id} id={`glow-${n.id}`}>
+                                    <stop offset="0%" stopColor={n.color} stopOpacity="0.4" />
+                                    <stop offset="100%" stopColor={n.color} stopOpacity="0" />
+                                </radialGradient>
+                            ))}
+                        </defs>
+
+                        {/* Edges */}
+                        {NODES.map((n) =>
+                            n.connections.map((cId) => {
+                                const target = NODES.find((nd) => nd.id === cId);
+                                if (!target) return null;
+                                return (
+                                    <line key={`${n.id}-${cId}`}
+                                        x1={n.x} y1={n.y} x2={target.x} y2={target.y}
+                                        stroke={`${n.color}50`}
+                                        strokeWidth={1.5}
+                                        strokeDasharray="4 8"
+                                    />
+                                );
+                            })
+                        )}
+
+                        {/* Nodes */}
+                        {NODES.map((n, i) => (
+                            <a key={n.id} href={n.href} style={{ cursor: 'pointer' }}>
+                                <g>
+                                    {/* Glowing background instead of strict SVG filter for performance */}
+                                    <circle cx={n.x} cy={n.y} r={32} fill={`url(#glow-${n.id})`} />
+
+                                    {/* Pulse ring */}
+                                    <motion.circle
+                                        cx={n.x} cy={n.y} r={36}
+                                        fill="none"
+                                        stroke={`${n.color}20`}
+                                        strokeWidth={1}
+                                        animate={{ r: [35, 42, 35], opacity: [0.3, 0.8, 0.3] }}
+                                        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.2 }}
+                                    />
+
+                                    {/* Node circle */}
+                                    <motion.circle
+                                        cx={n.x} cy={n.y} r={24}
+                                        fill={`${n.color}15`}
+                                        stroke={n.color}
+                                        strokeWidth={1.5}
+                                        initial={{ scale: 0, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        transition={{ delay: i * 0.04, duration: 0.4 }}
+                                        whileHover={{ scale: 1.15 }}
+                                        style={{ transformOrigin: `${n.x}px ${n.y}px` }}
+                                    />
+                                    {/* Icon — rendered as foreignObject */}
+                                    <foreignObject x={n.x - 10} y={n.y - 10} width={20} height={20} style={{ overflow: 'visible' }}>
+                                        <div style={{
+                                            width: 20, height: 20,
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            color: n.color, pointerEvents: 'none',
+                                        }}>
+                                            <n.Icon size={15} strokeWidth={2} />
+                                        </div>
+                                    </foreignObject>
+                                    {/* Label */}
+                                    <text x={n.x} y={n.y + 38} textAnchor="middle" fill={n.color}
+                                        fontSize="11" fontFamily="Space Grotesk, sans-serif" fontWeight="600">
+                                        {n.label}
+                                    </text>
+                                    <text x={n.x} y={n.y + 52} textAnchor="middle" fill="rgba(26,18,9,0.35)"
+                                        fontSize="9" fontFamily="Inter, sans-serif">
+                                        {n.category}
+                                    </text>
+                                </g>
+                            </a>
                         ))}
-                    </defs>
-
-                    {/* Edges */}
-                    {NODES.map((n) =>
-                        n.connections.map((cId) => {
-                            const target = NODES.find((nd) => nd.id === cId);
-                            if (!target) return null;
-                            return (
-                                <line key={`${n.id}-${cId}`}
-                                    x1={n.x} y1={n.y} x2={target.x} y2={target.y}
-                                    stroke={`${n.color}50`}
-                                    strokeWidth={1.5}
-                                    strokeDasharray="4 8"
-                                />
-                            );
-                        })
-                    )}
-
-                    {/* Nodes */}
-                    {NODES.map((n, i) => (
-                        <a key={n.id} href={n.href} style={{ cursor: 'pointer' }}>
-                            <g>
-                                {/* Glowing background instead of strict SVG filter for performance */}
-                                <circle cx={n.x} cy={n.y} r={32} fill={`url(#glow-${n.id})`} />
-
-                                {/* Pulse ring */}
-                                <motion.circle
-                                    cx={n.x} cy={n.y} r={36}
-                                    fill="none"
-                                    stroke={`${n.color}20`}
-                                    strokeWidth={1}
-                                    animate={{ r: [35, 42, 35], opacity: [0.3, 0.8, 0.3] }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.2 }}
-                                />
-
-                                {/* Node circle */}
-                                <motion.circle
-                                    cx={n.x} cy={n.y} r={24}
-                                    fill={`${n.color}15`}
-                                    stroke={n.color}
-                                    strokeWidth={1.5}
-                                    initial={{ scale: 0, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    transition={{ delay: i * 0.04, duration: 0.4 }}
-                                    whileHover={{ scale: 1.15 }}
-                                    style={{ transformOrigin: `${n.x}px ${n.y}px` }}
-                                />
-                                {/* Icon — rendered as foreignObject */}
-                                <foreignObject x={n.x - 10} y={n.y - 10} width={20} height={20} style={{ overflow: 'visible' }}>
-                                    <div style={{
-                                        width: 20, height: 20,
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                        color: n.color, pointerEvents: 'none',
-                                    }}>
-                                        <n.Icon size={15} strokeWidth={2} />
-                                    </div>
-                                </foreignObject>
-                                {/* Label */}
-                                <text x={n.x} y={n.y + 38} textAnchor="middle" fill={n.color}
-                                    fontSize="11" fontFamily="Space Grotesk, sans-serif" fontWeight="600">
-                                    {n.label}
-                                </text>
-                                <text x={n.x} y={n.y + 52} textAnchor="middle" fill="rgba(26,18,9,0.35)"
-                                    fontSize="9" fontFamily="Inter, sans-serif">
-                                    {n.category}
-                                </text>
-                            </g>
-                        </a>
-                    ))}
-                </svg>
+                    </svg>
+                </div>
             </div>
 
             {/* Legend */}

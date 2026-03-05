@@ -17,8 +17,8 @@ interface StepControlsProps {
     onSpeedChange: (ms: number) => void;
 }
 
-const speeds = [1200, 700, 400, 200, 100];
-const speedLabels: Record<number, string> = { 1200: '0.5×', 700: '1×', 400: '2×', 200: '4×', 100: '8×' };
+const speeds = [2000, 1000, 500, 250, 125];
+const speedLabels: Record<number, string> = { 2000: '0.5×', 1000: '1×', 500: '2×', 250: '4×', 125: '8×' };
 
 export function StepControls({
     isPlaying, currentStep, totalSteps, speed, phase,

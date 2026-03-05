@@ -45,7 +45,7 @@ export class AlgorithmEngine {
     private currentStep: number = 0;
     private intervalId: ReturnType<typeof setInterval> | null = null;
     private onStateChange: (state: AlgorithmState) => void;
-    private speed: number = 700;
+    private speed: number = 1000;
     private isPlaying: boolean = false;
 
     constructor(onStateChange: (state: AlgorithmState) => void) {
